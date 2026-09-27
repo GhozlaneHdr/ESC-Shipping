@@ -31,9 +31,18 @@ export const offices = [
   },
 ];
 
+export type ServicePath =
+  | "/services/transport-maritime"
+  | "/services/entreposage"
+  | "/services/agent-de-fret"
+  | "/services/agent-maritime"
+  | "/services/dedouanement"
+  | "/services/transport-aerien"
+  | "/services/transport-routier";
+
 export type Service = {
   slug: string;
-  path: string;
+  path: ServicePath;
   name: string;
   short: string;
   image: string;
