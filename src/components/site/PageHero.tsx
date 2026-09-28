@@ -28,6 +28,3 @@ export function PageHero({
   );
 }
 
-export function CtaBand() {
-  return null;
-}

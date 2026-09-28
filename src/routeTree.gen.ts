@@ -10,33 +10,169 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AProposRouteImport } from './routes/a-propos'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
+import { Route as ServicesAgentDeFretRouteImport } from './routes/services.agent-de-fret'
+import { Route as ServicesAgentMaritimeRouteImport } from './routes/services.agent-maritime'
+import { Route as ServicesDedouanementRouteImport } from './routes/services.dedouanement'
+import { Route as ServicesEntreposageRouteImport } from './routes/services.entreposage'
+import { Route as ServicesTransportAerienRouteImport } from './routes/services.transport-aerien'
+import { Route as ServicesTransportMaritimeRouteImport } from './routes/services.transport-maritime'
+import { Route as ServicesTransportRoutierRouteImport } from './routes/services.transport-routier'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AProposRoute = AProposRouteImport.update({
+  id: '/a-propos',
+  path: '/a-propos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesAgentDeFretRoute = ServicesAgentDeFretRouteImport.update({
+  id: '/services/agent-de-fret',
+  path: '/services/agent-de-fret',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesAgentMaritimeRoute = ServicesAgentMaritimeRouteImport.update({
+  id: '/services/agent-maritime',
+  path: '/services/agent-maritime',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesDedouanementRoute = ServicesDedouanementRouteImport.update({
+  id: '/services/dedouanement',
+  path: '/services/dedouanement',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesEntreposageRoute = ServicesEntreposageRouteImport.update({
+  id: '/services/entreposage',
+  path: '/services/entreposage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesTransportAerienRoute = ServicesTransportAerienRouteImport.update({
+  id: '/services/transport-aerien',
+  path: '/services/transport-aerien',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesTransportMaritimeRoute =
+  ServicesTransportMaritimeRouteImport.update({
+    id: '/services/transport-maritime',
+    path: '/services/transport-maritime',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ServicesTransportRoutierRoute =
+  ServicesTransportRoutierRouteImport.update({
+    id: '/services/transport-routier',
+    path: '/services/transport-routier',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/a-propos': typeof AProposRoute
+  '/contact': typeof ContactRoute
+  '/services/agent-de-fret': typeof ServicesAgentDeFretRoute
+  '/services/agent-maritime': typeof ServicesAgentMaritimeRoute
+  '/services/dedouanement': typeof ServicesDedouanementRoute
+  '/services/entreposage': typeof ServicesEntreposageRoute
+  '/services/transport-aerien': typeof ServicesTransportAerienRoute
+  '/services/transport-maritime': typeof ServicesTransportMaritimeRoute
+  '/services/transport-routier': typeof ServicesTransportRoutierRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/a-propos': typeof AProposRoute
+  '/contact': typeof ContactRoute
+  '/services/agent-de-fret': typeof ServicesAgentDeFretRoute
+  '/services/agent-maritime': typeof ServicesAgentMaritimeRoute
+  '/services/dedouanement': typeof ServicesDedouanementRoute
+  '/services/entreposage': typeof ServicesEntreposageRoute
+  '/services/transport-aerien': typeof ServicesTransportAerienRoute
+  '/services/transport-maritime': typeof ServicesTransportMaritimeRoute
+  '/services/transport-routier': typeof ServicesTransportRoutierRoute
+  '/services': typeof ServicesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/a-propos': typeof AProposRoute
+  '/contact': typeof ContactRoute
+  '/services/agent-de-fret': typeof ServicesAgentDeFretRoute
+  '/services/agent-maritime': typeof ServicesAgentMaritimeRoute
+  '/services/dedouanement': typeof ServicesDedouanementRoute
+  '/services/entreposage': typeof ServicesEntreposageRoute
+  '/services/transport-aerien': typeof ServicesTransportAerienRoute
+  '/services/transport-maritime': typeof ServicesTransportMaritimeRoute
+  '/services/transport-routier': typeof ServicesTransportRoutierRoute
+  '/services/': typeof ServicesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/a-propos'
+    | '/contact'
+    | '/services/agent-de-fret'
+    | '/services/agent-maritime'
+    | '/services/dedouanement'
+    | '/services/entreposage'
+    | '/services/transport-aerien'
+    | '/services/transport-maritime'
+    | '/services/transport-routier'
+    | '/services/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/a-propos'
+    | '/contact'
+    | '/services/agent-de-fret'
+    | '/services/agent-maritime'
+    | '/services/dedouanement'
+    | '/services/entreposage'
+    | '/services/transport-aerien'
+    | '/services/transport-maritime'
+    | '/services/transport-routier'
+    | '/services'
+  id:
+    | '__root__'
+    | '/'
+    | '/a-propos'
+    | '/contact'
+    | '/services/agent-de-fret'
+    | '/services/agent-maritime'
+    | '/services/dedouanement'
+    | '/services/entreposage'
+    | '/services/transport-aerien'
+    | '/services/transport-maritime'
+    | '/services/transport-routier'
+    | '/services/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AProposRoute: typeof AProposRoute
+  ContactRoute: typeof ContactRoute
+  ServicesAgentDeFretRoute: typeof ServicesAgentDeFretRoute
+  ServicesAgentMaritimeRoute: typeof ServicesAgentMaritimeRoute
+  ServicesDedouanementRoute: typeof ServicesDedouanementRoute
+  ServicesEntreposageRoute: typeof ServicesEntreposageRoute
+  ServicesTransportAerienRoute: typeof ServicesTransportAerienRoute
+  ServicesTransportMaritimeRoute: typeof ServicesTransportMaritimeRoute
+  ServicesTransportRoutierRoute: typeof ServicesTransportRoutierRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +184,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/a-propos': {
+      id: '/a-propos'
+      path: '/a-propos'
+      fullPath: '/a-propos'
+      preLoaderRoute: typeof AProposRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/agent-de-fret': {
+      id: '/services/agent-de-fret'
+      path: '/services/agent-de-fret'
+      fullPath: '/services/agent-de-fret'
+      preLoaderRoute: typeof ServicesAgentDeFretRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/agent-maritime': {
+      id: '/services/agent-maritime'
+      path: '/services/agent-maritime'
+      fullPath: '/services/agent-maritime'
+      preLoaderRoute: typeof ServicesAgentMaritimeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/dedouanement': {
+      id: '/services/dedouanement'
+      path: '/services/dedouanement'
+      fullPath: '/services/dedouanement'
+      preLoaderRoute: typeof ServicesDedouanementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/entreposage': {
+      id: '/services/entreposage'
+      path: '/services/entreposage'
+      fullPath: '/services/entreposage'
+      preLoaderRoute: typeof ServicesEntreposageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/transport-aerien': {
+      id: '/services/transport-aerien'
+      path: '/services/transport-aerien'
+      fullPath: '/services/transport-aerien'
+      preLoaderRoute: typeof ServicesTransportAerienRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/transport-maritime': {
+      id: '/services/transport-maritime'
+      path: '/services/transport-maritime'
+      fullPath: '/services/transport-maritime'
+      preLoaderRoute: typeof ServicesTransportMaritimeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/transport-routier': {
+      id: '/services/transport-routier'
+      path: '/services/transport-routier'
+      fullPath: '/services/transport-routier'
+      preLoaderRoute: typeof ServicesTransportRoutierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AProposRoute: AProposRoute,
+  ContactRoute: ContactRoute,
+  ServicesAgentDeFretRoute: ServicesAgentDeFretRoute,
+  ServicesAgentMaritimeRoute: ServicesAgentMaritimeRoute,
+  ServicesDedouanementRoute: ServicesDedouanementRoute,
+  ServicesEntreposageRoute: ServicesEntreposageRoute,
+  ServicesTransportAerienRoute: ServicesTransportAerienRoute,
+  ServicesTransportMaritimeRoute: ServicesTransportMaritimeRoute,
+  ServicesTransportRoutierRoute: ServicesTransportRoutierRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
