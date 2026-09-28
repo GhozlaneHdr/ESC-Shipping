@@ -38,7 +38,7 @@ function Home() {
           </p>
           <div className="mt-10 flex flex-wrap gap-4">
             <CtaLink to="/contact" size="lg">Demander un devis</CtaLink>
-            <CtaAnchor href={`tel:${contact.phones[0].replace(/\s/g, "")}`} variant="ghostLight" size="lg">
+            <CtaAnchor href={`tel:${contact.phones[0]!.replace(/\s/g, "")}`} variant="ghostLight" size="lg">
               <Phone className="h-4 w-4" /> {contact.phones[0]}
             </CtaAnchor>
           </div>
