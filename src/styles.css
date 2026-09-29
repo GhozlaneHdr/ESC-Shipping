@@ -222,3 +222,18 @@
     linear-gradient(to bottom, oklch(1 0 0 / 0.06) 1px, transparent 1px);
   background-size: 64px 64px;
 }
+
+/* ── Partners marquee ────────────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.partners-track {
+  animation: marquee 28s linear infinite;
+}
+
+/* Pause on hover for accessibility */
+.partners-track:hover {
+  animation-play-state: paused;
+}

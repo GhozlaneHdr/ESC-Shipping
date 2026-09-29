@@ -10,6 +10,7 @@ const navLinks = [
   { to: "/", label: "Accueil" },
   { to: "/a-propos", label: "À propos" },
   { to: "/services", label: "Services" },
+  { to: "/campagnes-maritimes", label: "Campagnes" },
   { to: "/contact", label: "Contact" },
 ];
 

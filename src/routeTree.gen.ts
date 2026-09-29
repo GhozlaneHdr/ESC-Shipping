@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AProposRouteImport } from './routes/a-propos'
+import { Route as CampagnesMaritimesRouteImport } from './routes/campagnes-maritimes'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesAgentDeFretRouteImport } from './routes/services.agent-de-fret'
@@ -29,6 +30,11 @@ const IndexRoute = IndexRouteImport.update({
 const AProposRoute = AProposRouteImport.update({
   id: '/a-propos',
   path: '/a-propos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampagnesMaritimesRoute = CampagnesMaritimesRouteImport.update({
+  id: '/campagnes-maritimes',
+  path: '/campagnes-maritimes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -82,6 +88,7 @@ const ServicesTransportRoutierRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/campagnes-maritimes': typeof CampagnesMaritimesRoute
   '/contact': typeof ContactRoute
   '/services/agent-de-fret': typeof ServicesAgentDeFretRoute
   '/services/agent-maritime': typeof ServicesAgentMaritimeRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/campagnes-maritimes': typeof CampagnesMaritimesRoute
   '/contact': typeof ContactRoute
   '/services/agent-de-fret': typeof ServicesAgentDeFretRoute
   '/services/agent-maritime': typeof ServicesAgentMaritimeRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/campagnes-maritimes': typeof CampagnesMaritimesRoute
   '/contact': typeof ContactRoute
   '/services/agent-de-fret': typeof ServicesAgentDeFretRoute
   '/services/agent-maritime': typeof ServicesAgentMaritimeRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/a-propos'
+    | '/campagnes-maritimes'
     | '/contact'
     | '/services/agent-de-fret'
     | '/services/agent-maritime'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/a-propos'
+    | '/campagnes-maritimes'
     | '/contact'
     | '/services/agent-de-fret'
     | '/services/agent-maritime'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/a-propos'
+    | '/campagnes-maritimes'
     | '/contact'
     | '/services/agent-de-fret'
     | '/services/agent-maritime'
@@ -164,6 +176,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AProposRoute: typeof AProposRoute
+  CampagnesMaritimesRoute: typeof CampagnesMaritimesRoute
   ContactRoute: typeof ContactRoute
   ServicesAgentDeFretRoute: typeof ServicesAgentDeFretRoute
   ServicesAgentMaritimeRoute: typeof ServicesAgentMaritimeRoute
@@ -189,6 +202,13 @@ declare module '@tanstack/react-router' {
       path: '/a-propos'
       fullPath: '/a-propos'
       preLoaderRoute: typeof AProposRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/campagnes-maritimes': {
+      id: '/campagnes-maritimes'
+      path: '/campagnes-maritimes'
+      fullPath: '/campagnes-maritimes'
+      preLoaderRoute: typeof CampagnesMaritimesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -260,6 +280,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AProposRoute: AProposRoute,
+  CampagnesMaritimesRoute: CampagnesMaritimesRoute,
   ContactRoute: ContactRoute,
   ServicesAgentDeFretRoute: ServicesAgentDeFretRoute,
   ServicesAgentMaritimeRoute: ServicesAgentMaritimeRoute,

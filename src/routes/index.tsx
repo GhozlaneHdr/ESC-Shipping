@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/site/SectionHeading";
 import { ServiceCard } from "@/components/site/ServiceCard";
 import { Reveal } from "@/components/site/Reveal";
 import { Counter } from "@/components/site/Counter";
+import { PartnersMarquee } from "@/components/site/PartnersMarquee";
 import { services, stats, contact } from "@/data/site";
 import hero from "@/assets/hero-port.jpg";
 import team from "@/assets/about-team.jpg";
@@ -57,6 +58,8 @@ function Home() {
           ))}
         </div>
       </section>
+
+      <PartnersMarquee />
 
       <section className="section">
         <div className="container-esc">
