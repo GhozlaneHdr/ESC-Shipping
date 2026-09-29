@@ -97,9 +97,24 @@ export function Footer() {
       </div>
 
       <div className="border-t border-navy-foreground/10">
-        <div className="container-esc flex flex-col items-center justify-between gap-3 py-6 text-xs text-navy-foreground/60 sm:flex-row">
-          <p>© 2026 ESC — Express Shipping Company. Tous droits réservés.</p>
-          <p>Transitaire & commissionnaire de transport — Sétif · Alger</p>
+        <div className="container-esc flex flex-col items-center gap-2 py-5 text-xs text-navy-foreground/60 sm:flex-row sm:justify-between">
+          {/* Left — copyright */}
+          <p className="text-center sm:text-left">
+            © 2026 ESC — Express Shipping Company. Tous droits réservés.
+          </p>
+
+          {/* Centre — designer credit */}
+          <p className="text-center">
+            Designed &amp; Developed by&nbsp;
+            <span className="font-semibold text-navy-foreground/80">IntellectSoft</span>
+            &nbsp;—&nbsp;
+            <span className="font-semibold text-navy-foreground/80">Zetoutou Faycal</span>
+          </p>
+
+          {/* Right — location */}
+          <p className="text-center sm:text-right">
+            Transitaire &amp; commissionnaire — Sétif · Alger
+          </p>
         </div>
       </div>
     </footer>
