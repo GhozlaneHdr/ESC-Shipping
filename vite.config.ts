@@ -12,4 +12,16 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    server: {
+      proxy: {
+        // Forward all /api/ calls from the React dev server to Django
+        "/api": {
+          target: "http://127.0.0.1:8000",
+          changeOrigin: true,
+          secure: false,
+        },
+      },
+    },
+  },
 });

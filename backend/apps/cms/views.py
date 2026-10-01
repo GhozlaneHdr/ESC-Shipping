@@ -1,49 +1,62 @@
-from rest_framework import viewsets, permissions
-from .models import MaritimeCampaign, AssociatedCampaign, Service, Stat, TrustedPartner
+"""
+Views for CMS models (Services, Campaigns, Stats, Partners).
+"""
+
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+
+from .models import (
+    AssociatedCampaign,
+    MaritimeCampaign,
+    Service,
+    Stat,
+    TrustedPartner,
+)
 from .serializers import (
-    MaritimeCampaignSerializer,
     AssociatedCampaignSerializer,
+    MaritimeCampaignSerializer,
     ServiceSerializer,
     StatSerializer,
     TrustedPartnerSerializer,
 )
 
-# Using ReadOnlyModelViewSet because content is managed via Django Admin
-# and the frontend only needs GET access to display it.
+
+class ServiceViewSet(viewsets.ReadOnlyModelViewSet):
+    """Read-only viewset for services."""
+
+    queryset = Service.objects.filter(is_active=True).prefetch_related("steps")
+    serializer_class = ServiceSerializer
+    permission_classes = [AllowAny]
+    lookup_field = "slug"
+
 
 class MaritimeCampaignViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint for fetching published maritime campaigns."""
+    """Read-only viewset for maritime campaigns."""
+
     queryset = MaritimeCampaign.objects.filter(is_published=True)
     serializer_class = MaritimeCampaignSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [AllowAny]
 
 
 class AssociatedCampaignViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint for fetching published associated campaigns."""
+    """Read-only viewset for associated campaigns."""
+
     queryset = AssociatedCampaign.objects.filter(is_published=True)
     serializer_class = AssociatedCampaignSerializer
-    permission_classes = [permissions.AllowAny]
-
-
-class ServiceViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint for fetching active services."""
-    queryset = Service.objects.filter(is_active=True).prefetch_related("steps")
-    serializer_class = ServiceSerializer
-    permission_classes = [permissions.AllowAny]
-    lookup_field = "slug"  # Allow looking up services by /api/cms/services/slug-name/
+    permission_classes = [AllowAny]
 
 
 class StatViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint for company physical stats."""
+    """Read-only viewset for company statistics."""
+
     queryset = Stat.objects.all()
     serializer_class = StatSerializer
-    permission_classes = [permissions.AllowAny]
-    pagination_class = None  # Return all stats at once without pagination
+    permission_classes = [AllowAny]
 
 
 class TrustedPartnerViewSet(viewsets.ReadOnlyModelViewSet):
-    """API endpoint for active trusted partners/logos."""
+    """Read-only viewset for trusted partners."""
+
     queryset = TrustedPartner.objects.filter(is_active=True)
     serializer_class = TrustedPartnerSerializer
-    permission_classes = [permissions.AllowAny]
-    pagination_class = None  # No pagination required for marquee logos
+    permission_classes = [AllowAny]

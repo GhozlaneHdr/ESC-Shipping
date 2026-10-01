@@ -7,7 +7,7 @@ import { ServiceCard } from "@/components/site/ServiceCard";
 import { Reveal } from "@/components/site/Reveal";
 import { Counter } from "@/components/site/Counter";
 import { PartnersMarquee } from "@/components/site/PartnersMarquee";
-import { services, stats, contact } from "@/data/site";
+import { services as staticServices, stats as staticStats, contact } from "@/data/site";
 import hero from "@/assets/hero-port.jpg";
 import team from "@/assets/about-team.jpg";
 
@@ -20,10 +20,34 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "Transport, dédouanement et entreposage : un interlocuteur unique pour vos opérations d'import-export." },
     ],
   }),
+  loader: async () => {
+    try {
+      const [statsRes, servicesRes] = await Promise.all([
+        fetch("http://127.0.0.1:8000/api/v1/cms/stats/"),
+        fetch("http://127.0.0.1:8000/api/v1/cms/services/"),
+      ]);
+
+      const statsData = statsRes.ok ? await statsRes.json() : null;
+      const servicesData = servicesRes.ok ? await servicesRes.json() : null;
+
+      const dbStats = statsData?.results ?? null;
+      const dbServices = servicesData?.results ?? null;
+
+      return { dbStats, dbServices };
+    } catch (error) {
+      console.error("[CMS loader] Failed to fetch from Django API:", error);
+      return { dbStats: null, dbServices: null };
+    }
+  },
   component: Home,
 });
 
 function Home() {
+  const { dbStats, dbServices } = Route.useLoaderData();
+
+  const displayStats = dbStats && dbStats.length > 0 ? dbStats : staticStats;
+  const displayServices = dbServices && dbServices.length > 0 ? dbServices : staticServices;
+
   return (
     <Layout>
       <section className="relative isolate -mt-20 overflow-hidden bg-navy pt-20">
@@ -48,7 +72,7 @@ function Home() {
 
       <section className="border-b border-border bg-background">
         <div className="container-esc grid gap-8 py-12 sm:grid-cols-3">
-          {stats.map((s) => (
+          {displayStats.map((s: any) => (
             <div key={s.label} className="text-center">
               <p className="font-display text-4xl font-extrabold text-primary">
                 <Counter value={s.value} suffix={s.suffix} />
@@ -65,7 +89,7 @@ function Home() {
         <div className="container-esc">
           <SectionHeading eyebrow="Nos services" title="Une offre logistique complète" description="Sept métiers complémentaires pour accompagner vos flux de bout en bout." />
           <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {services.map((s, i) => (
+            {displayServices.map((s: any, i: number) => (
               <Reveal key={s.slug} delay={i * 60}><ServiceCard service={s} /></Reveal>
             ))}
           </div>

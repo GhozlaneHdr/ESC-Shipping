@@ -3,8 +3,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Send } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { CtaButton } from "./Cta";
-import { services } from "@/data/site";
+import { getServices } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 const schema = z.object({
@@ -33,12 +34,44 @@ export function QuoteForm() {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({ resolver: zodResolver(schema), mode: "onBlur" });
 
+  const { data: services } = useQuery({
+    queryKey: ["services"],
+    queryFn: getServices,
+  });
+
   const onSubmit = async (values: FormValues) => {
-    await new Promise((r) => setTimeout(r, 600));
-    toast.success("Demande enregistrée", {
-      description: `Merci ${values.nom}. Notre équipe vous recontacte rapidement.`,
-    });
-    reset();
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/v1/quotations/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          full_name: values.nom,
+          company: values.entreprise || "",
+          email: values.email,
+          phone: values.telephone,
+          service_type: values.service,
+          departure: values.depart,
+          destination: values.destination,
+          message: values.message || "",
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || "Une erreur est survenue.");
+      }
+
+      toast.success("Demande enregistrée", {
+        description: `Merci ${values.nom}. Notre équipe vous recontacte rapidement.`,
+      });
+      reset();
+    } catch (error: any) {
+      toast.error("Erreur", {
+        description: error.message || "Impossible d'envoyer votre demande. Veuillez réessayer.",
+      });
+    }
   };
 
   const Error = ({ name }: { name: keyof FormValues }) =>
@@ -120,7 +153,7 @@ export function QuoteForm() {
             <option value="" disabled>
               Sélectionnez un service
             </option>
-            {services.map((s) => (
+            {(services || []).map((s) => (
               <option key={s.slug} value={s.name}>
                 {s.name}
               </option>

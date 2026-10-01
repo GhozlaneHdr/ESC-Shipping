@@ -6,8 +6,14 @@
 import { ArrowRight, Calendar, MapPin, Tag } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ctaVariants } from "@/components/site/Cta";
-import type { MaritimeCampaign } from "@/data/campaigns";
-import { statusMeta } from "@/data/campaigns";
+import type { MaritimeCampaign } from "@/lib/api";
+
+const statusMeta: Record<string, { label: string; color: string; dot: string }> = {
+  "active":   { label: "Active",          color: "bg-emerald-100 text-emerald-700", dot: "bg-emerald-500" },
+  "limited":  { label: "Offre limitée",   color: "bg-amber-100 text-amber-700",   dot: "bg-amber-500" },
+  "upcoming": { label: "À venir",         color: "bg-blue-100 text-blue-700",     dot: "bg-blue-500" },
+  "expired":  { label: "Expirée",         color: "bg-gray-100 text-gray-500",     dot: "bg-gray-400" },
+};
 
 function formatDate(iso: string) {
   return new Intl.DateTimeFormat("fr-FR", {
@@ -22,7 +28,7 @@ export function MaritimeCampaignCard({
 }: {
   campaign: MaritimeCampaign;
 }) {
-  const meta = statusMeta[campaign.status];
+  const meta = statusMeta[campaign.status] ?? statusMeta["active"]!;
 
   return (
     <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lift">
@@ -70,11 +76,11 @@ export function MaritimeCampaignCard({
         <div className="mt-4 flex items-center gap-2 rounded-xl bg-surface px-4 py-2.5 text-sm">
           <MapPin className="h-4 w-4 shrink-0 text-primary" />
           <span className="font-medium text-foreground">
-            {campaign.route.from}
+            {campaign.route_from}
           </span>
           <ArrowRight className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
           <span className="font-medium text-foreground">
-            {campaign.route.to}
+            {campaign.route_to}
           </span>
         </div>
 
@@ -85,7 +91,7 @@ export function MaritimeCampaignCard({
 
         {/* Highlights */}
         <ul className="mt-5 space-y-1.5">
-          {campaign.highlights.map((h) => (
+          {campaign.highlights_list.map((h: string) => (
             <li key={h} className="flex items-center gap-2 text-sm text-foreground/80">
               <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
               {h}
@@ -97,7 +103,7 @@ export function MaritimeCampaignCard({
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
             <Calendar className="h-3.5 w-3.5" />
-            Valide jusqu'au {formatDate(campaign.validUntil)}
+            Valide jusqu'au {formatDate(campaign.valid_until)}
           </span>
           <button
             type="button"

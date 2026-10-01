@@ -247,7 +247,7 @@ export const services: Service[] = [
 export const serviceBySlug = (slug: string) => services.find((s) => s.slug === slug)!;
 
 export const stats = [
-  { value: 10, suffix: "+", label: "Années d'expérience" },
+  { value: 12, suffix: "+", label: "Années d'expérience" },
   { value: 300, suffix: "+", label: "Clients accompagnés" },
   { value: 40, suffix: "+", label: "Partenaires internationaux" },
 ];

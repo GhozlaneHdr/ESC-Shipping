@@ -6,7 +6,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { CtaLink } from "@/components/site/Cta";
 import { MaritimeCampaignCard } from "@/components/site/MaritimeCampaignCard";
 import { AssociatedCampaignCard } from "@/components/site/AssociatedCampaignCard";
-import { maritimeCampaigns, associatedCampaigns, statusMeta } from "@/data/campaigns";
+import { maritimeCampaigns as staticMaritime, associatedCampaigns as staticAssociated, statusMeta } from "@/data/campaigns";
 import type { CampaignStatus } from "@/data/campaigns";
 
 export const Route = createFileRoute("/campagnes-maritimes")({
@@ -24,6 +24,22 @@ export const Route = createFileRoute("/campagnes-maritimes")({
       },
     ],
   }),
+  loader: async () => {
+    try {
+      const [maritimeRes, assocRes] = await Promise.all([
+        fetch("http://127.0.0.1:8000/api/v1/cms/maritime-campaigns/"),
+        fetch("http://127.0.0.1:8000/api/v1/cms/associated-campaigns/"),
+      ]);
+      const maritimeData = maritimeRes.ok ? await maritimeRes.json() : null;
+      const assocData = assocRes.ok ? await assocRes.json() : null;
+      const dbMaritime = maritimeData?.results ?? null;
+      const dbAssociated = assocData?.results ?? null;
+      return { dbMaritime, dbAssociated };
+    } catch {
+      console.error("[Campaigns loader] Failed to fetch from Django API");
+      return { dbMaritime: null, dbAssociated: null };
+    }
+  },
   component: CampagnesMaritimes,
 });
 
@@ -46,6 +62,12 @@ const pageStats = [
  *  Page component                                                     *
  * ================================================================= */
 function CampagnesMaritimes() {
+  const { dbMaritime, dbAssociated } = Route.useLoaderData();
+
+  // Fall back to static data when Django API has no entries yet
+  const maritimeCampaigns = dbMaritime && dbMaritime.length > 0 ? dbMaritime : staticMaritime;
+  const associatedCampaigns = dbAssociated && dbAssociated.length > 0 ? dbAssociated : staticAssociated;
+
   return (
     <Layout>
       {/* ── Hero ─────────────────────────────────────────────────── */}
@@ -129,7 +151,7 @@ function CampagnesMaritimes() {
           />
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-2">
-            {maritimeCampaigns.map((campaign, i) => (
+            {maritimeCampaigns.map((campaign: any, i: number) => (
               <Reveal key={campaign.id} delay={i * 80}>
                 <MaritimeCampaignCard campaign={campaign} />
               </Reveal>
@@ -148,7 +170,7 @@ function CampagnesMaritimes() {
           />
 
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {associatedCampaigns.map((campaign, i) => (
+            {associatedCampaigns.map((campaign: any, i: number) => (
               <Reveal key={campaign.id} delay={i * 70}>
                 <AssociatedCampaignCard campaign={campaign} />
               </Reveal>

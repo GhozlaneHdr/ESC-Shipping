@@ -44,6 +44,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "apps.users",
     "apps.cms",
+    "apps.quotations",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -215,12 +216,15 @@ SIMPLE_JWT = {
 # CORS Configuration
 # =============================================================================
 
-CORS_ALLOWED_ORIGINS = config(
-    "CORS_ALLOWED_ORIGINS",
-    default="http://localhost:5173,http://localhost:3000",
-    cast=Csv(),
-)
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+# =============================================================================
+# Email Configuration
+# =============================================================================
+
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@esc-shipping.com")
+ADMIN_EMAIL = config("ADMIN_EMAIL", default="admin@esc-shipping.com")
 
 # =============================================================================
 # drf-spectacular (API Documentation)

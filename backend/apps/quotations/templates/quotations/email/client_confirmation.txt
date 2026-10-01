@@ -1,0 +1,18 @@
+Bonjour {{ quotation.full_name }},
+
+Merci pour votre demande de devis auprès d'Express Shipping Company (ESC).
+
+Nous avons bien reçu votre demande concernant le service suivant:
+- Service: {{ quotation.service_type }}
+- Départ: {{ quotation.departure }}
+- Destination: {{ quotation.destination }}
+
+Notre équipe va étudier votre demande et reviendra vers vous dans les plus brefs délais avec une proposition adaptée.
+
+Pour toute question, vous pouvez nous contacter:
+- Téléphone: +213 555 50 86 21
+- Email: contact@ex-shipping.com
+
+Cordialement,
+L'équipe ESC — Express Shipping Company
+Sétif · Alger

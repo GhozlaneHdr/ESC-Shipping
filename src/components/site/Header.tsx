@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { CtaLink } from "./Cta";
-import { services } from "@/data/site";
+import { getServices } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -18,6 +19,11 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+
+  const { data: services } = useQuery({
+    queryKey: ["services"],
+    queryFn: getServices,
+  });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -69,10 +75,10 @@ export function Header() {
                   )}
                 >
                   <div className="overflow-hidden rounded-2xl border border-border bg-popover p-2 shadow-lift">
-                    {services.map((s) => (
+                    {(services || []).map((s) => (
                       <Link
                         key={s.slug}
-                        to={s.path}
+                        to={`/services/${s.slug}` as any}
                         onClick={() => setServicesOpen(false)}
                         className="block rounded-xl px-4 py-3 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-primary"
                       >
@@ -135,10 +141,10 @@ export function Header() {
             <p className="px-2 pb-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               Nos services
             </p>
-            {services.map((s) => (
+            {(services || []).map((s) => (
               <Link
                 key={s.slug}
-                to={s.path}
+                to={`/services/${s.slug}` as any}
                 onClick={() => setOpen(false)}
                 className="block rounded-xl px-2 py-2.5 text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
               >

@@ -1,52 +1,30 @@
+"""
+Serializers for CMS models (Services, Campaigns, Stats, Partners).
+"""
+
 from rest_framework import serializers
+
 from .models import (
-    MaritimeCampaign,
     AssociatedCampaign,
+    MaritimeCampaign,
     Service,
     ServiceStep,
     Stat,
     TrustedPartner,
 )
 
-class MaritimeCampaignSerializer(serializers.ModelSerializer):
-    highlights_list = serializers.ListField(
-        child=serializers.CharField(), source="get_highlights_list", read_only=True
-    )
-
-    class Meta:
-        model = MaritimeCampaign
-        fields = [
-            "id",
-            "title",
-            "subtitle",
-            "description",
-            "route_from",
-            "route_to",
-            "discount",
-            "status",
-            "valid_until",
-            "highlights_list",
-        ]
-
-class AssociatedCampaignSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AssociatedCampaign
-        fields = [
-            "id",
-            "title",
-            "category",
-            "description",
-            "badge",
-            "status",
-            "valid_until",
-        ]
 
 class ServiceStepSerializer(serializers.ModelSerializer):
+    """Serializer for service steps."""
+
     class Meta:
         model = ServiceStep
-        fields = ["title", "text", "order"]
+        fields = ["id", "title", "text", "order"]
+
 
 class ServiceSerializer(serializers.ModelSerializer):
+    """Serializer for services with nested steps."""
+
     steps = ServiceStepSerializer(many=True, read_only=True)
     benefits_list = serializers.SerializerMethodField()
     why_us_list = serializers.SerializerMethodField()
@@ -60,23 +38,78 @@ class ServiceSerializer(serializers.ModelSerializer):
             "short_description",
             "long_intro",
             "image",
+            "benefits",
             "benefits_list",
+            "why_us",
             "why_us_list",
             "steps",
+            "is_active",
+            "order",
         ]
 
     def get_benefits_list(self, obj):
-        return [line.strip() for line in obj.benefits.strip().split("\n") if line.strip()]
+        return [line.strip() for line in obj.benefits.split("\n") if line.strip()]
 
     def get_why_us_list(self, obj):
-        return [line.strip() for line in obj.why_us.strip().split("\n") if line.strip()]
+        return [line.strip() for line in obj.why_us.split("\n") if line.strip()]
+
+
+class MaritimeCampaignSerializer(serializers.ModelSerializer):
+    """Serializer for maritime campaigns."""
+
+    highlights_list = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MaritimeCampaign
+        fields = [
+            "id",
+            "title",
+            "subtitle",
+            "route_from",
+            "route_to",
+            "discount",
+            "description",
+            "highlights",
+            "highlights_list",
+            "valid_until",
+            "status",
+            "is_published",
+            "created_at",
+        ]
+
+    def get_highlights_list(self, obj):
+        return [line.strip() for line in obj.highlights.split("\n") if line.strip()]
+
+
+class AssociatedCampaignSerializer(serializers.ModelSerializer):
+    """Serializer for associated campaigns."""
+
+    class Meta:
+        model = AssociatedCampaign
+        fields = [
+            "id",
+            "category",
+            "title",
+            "description",
+            "badge",
+            "status",
+            "valid_until",
+            "is_published",
+            "created_at",
+        ]
+
 
 class StatSerializer(serializers.ModelSerializer):
+    """Serializer for company statistics."""
+
     class Meta:
         model = Stat
-        fields = ["value", "suffix", "label"]
+        fields = ["id", "value", "suffix", "label", "order"]
+
 
 class TrustedPartnerSerializer(serializers.ModelSerializer):
+    """Serializer for trusted partners."""
+
     class Meta:
         model = TrustedPartner
-        fields = ["id", "name", "logo", "website"]
+        fields = ["id", "name", "logo", "website", "is_active", "order"]

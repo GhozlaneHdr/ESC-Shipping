@@ -1,9 +1,32 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Mail, MapPin, Phone } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Logo } from "./Logo";
-import { contact, offices, services } from "@/data/site";
+import { getServices } from "@/lib/api";
 
 export function Footer() {
+  const { data: services } = useQuery({
+    queryKey: ["services"],
+    queryFn: getServices,
+  });
+
+  const contact = {
+    phones: ["+213 555 50 86 21", "+213 555 50 86 20", "+213 555 50 86 19"],
+    emails: ["contact@ex-shipping.com", "sales@ex-shipping.com"],
+    facebook: "https://www.facebook.com/people/Express-Shipping-Company/100063539442443/",
+  };
+
+  const offices = [
+    {
+      name: "ESC — SÉTIF",
+      address: "Cité 326 logts ZHUN, Bâtiment A06, Local n°24, Sétif",
+    },
+    {
+      name: "ESC — ALGER",
+      address: "1 Rue Mohamed Belouizdad, Sidi M'Hamed, Alger",
+    },
+  ];
+
   return (
     <footer className="bg-navy-deep text-navy-foreground">
       <div className="container-esc grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-12 lg:py-20">
@@ -49,9 +72,9 @@ export function Footer() {
             Services
           </h3>
           <ul className="mt-5 space-y-3 text-sm text-navy-foreground/70">
-            {services.map((s) => (
+            {(services || []).map((s) => (
               <li key={s.slug}>
-                <Link to={s.path} className="transition-colors hover:text-primary-foreground">
+                <Link to={`/services/${s.slug}` as any} className="transition-colors hover:text-primary-foreground">
                   {s.name}
                 </Link>
               </li>

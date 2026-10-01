@@ -4,8 +4,32 @@ import { Layout } from "@/components/site/Layout";
 import { PageHero } from "@/components/site/PageHero";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { QuoteForm } from "@/components/site/QuoteForm";
-import { contact, offices } from "@/data/site";
 import port from "@/assets/hero-port.jpg";
+
+// Static contact info (not in CMS yet)
+const contact = {
+  phones: ["+213 555 50 86 21", "+213 555 50 86 20", "+213 555 50 86 19"],
+  emails: ["contact@ex-shipping.com", "sales@ex-shipping.com"],
+  hours: [
+    { days: "Dimanche – Jeudi", time: "08:00 – 17:00" },
+    { days: "Vendredi – Samedi", time: "Fermé" },
+  ],
+};
+
+const offices = [
+  {
+    name: "ESC — SÉTIF",
+    address: "Cité 326 logts ZHUN, Bâtiment A06, Local n°24, Sétif",
+    phones: ["+213 36 54 74 41", "+213 555 50 86 21", "+213 555 50 86 20", "+213 555 50 86 19"],
+    map: "https://www.google.com/maps?q=Setif%2C%20Alg%C3%A9rie&output=embed",
+  },
+  {
+    name: "ESC — ALGER",
+    address: "1 Rue Mohamed Belouizdad, Sidi M'Hamed, Alger",
+    phones: ["+213 28 13 37 70", "+213 555 57 24 40"],
+    map: "https://www.google.com/maps?q=1%20Rue%20Mohamed%20Belouizdad%2C%20Sidi%20M'Hamed%2C%20Alger&output=embed",
+  },
+];
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
