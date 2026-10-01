@@ -1,0 +1,16 @@
+Nouvelle demande de devis reçue sur ESC Shipping.
+
+Client: {{ devis.full_name }}
+{% if devis.company %}Société: {{ devis.company }}{% endif %}
+Email: {{ devis.email }}
+Téléphone: {{ devis.phone }}
+
+Service demandé: {{ devis.service_type }}
+Départ: {{ devis.departure }}
+Destination: {{ devis.destination }}
+
+Message:
+{{ devis.message|default:"(aucun message)" }}
+
+---
+Connectez-vous à l'administration Django pour gérer cette demande.

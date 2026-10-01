@@ -44,7 +44,8 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
     "apps.users",
     "apps.cms",
-    "apps.quotations",
+    "apps.devis",
+    "apps.shipping",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -58,6 +59,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -146,7 +148,14 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # =============================================================================
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "fr"
+LANGUAGES = [
+    ("fr", "Français"),
+    ("en", "English"),
+]
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 TIME_ZONE = "UTC"
 USE_I18N = True
 USE_TZ = True
@@ -220,11 +229,20 @@ CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 # =============================================================================
-# Email Configuration
+# Email Configuration (SMTP)
 # =============================================================================
 
-DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="noreply@esc-shipping.com")
-ADMIN_EMAIL = config("ADMIN_EMAIL", default="admin@esc-shipping.com")
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = config("EMAIL_HOST", default="mail.ex-shipping.com")
+EMAIL_PORT = config("EMAIL_PORT", default=587, cast=int)
+EMAIL_HOST_USER = config("EMAIL_HOST_USER", default="website@ex-shipping.com")
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", default="")
+EMAIL_USE_TLS = config("EMAIL_USE_TLS", default=True, cast=bool)
+EMAIL_USE_SSL = config("EMAIL_USE_SSL", default=False, cast=bool)
+EMAIL_TIMEOUT = config("EMAIL_TIMEOUT", default=30, cast=int)
+
+DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL", default="website@ex-shipping.com")
+ADMIN_EMAIL = config("ADMIN_EMAIL", default="website@ex-shipping.com")
 
 # =============================================================================
 # drf-spectacular (API Documentation)

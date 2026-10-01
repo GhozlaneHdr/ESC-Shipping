@@ -5,6 +5,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
 import { getTrustedPartners, type TrustedPartner } from "@/lib/api";
 
 /** Simple SVG text-badge that mimics a brand word-mark. */
@@ -75,17 +76,18 @@ export function PartnersMarquee() {
     queryKey: ["partners"],
     queryFn: getTrustedPartners,
   });
+  const { t } = useI18n();
 
   if (isLoading || !partners || partners.length === 0) {
     return (
       <section
-        aria-label="Nos partenaires"
+        aria-label={t("partners.title")}
         className="border-y border-border bg-background py-14"
       >
         <div className="container-esc mb-10 text-center">
-          <p className="eyebrow">Ils nous font confiance</p>
+          <p className="eyebrow">{t("partners.eyebrow")}</p>
           <h2 className="mt-3 font-display text-2xl font-extrabold text-navy sm:text-3xl">
-            Nos partenaires &amp; clients
+            {t("partners.title")}
           </h2>
         </div>
       </section>
@@ -97,13 +99,13 @@ export function PartnersMarquee() {
 
   return (
     <section
-      aria-label="Nos partenaires"
+      aria-label={t("partners.title")}
       className="border-y border-border bg-background py-14"
     >
       <div className="container-esc mb-10 text-center">
-        <p className="eyebrow">Ils nous font confiance</p>
+        <p className="eyebrow">{t("partners.eyebrow")}</p>
         <h2 className="mt-3 font-display text-2xl font-extrabold text-navy sm:text-3xl">
-          Nos partenaires &amp; clients
+          {t("partners.title")}
         </h2>
       </div>
 

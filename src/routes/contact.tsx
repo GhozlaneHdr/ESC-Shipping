@@ -4,6 +4,7 @@ import { Layout } from "@/components/site/Layout";
 import { PageHero } from "@/components/site/PageHero";
 import { SectionHeading } from "@/components/site/SectionHeading";
 import { QuoteForm } from "@/components/site/QuoteForm";
+import { useI18n } from "@/lib/i18n";
 import port from "@/assets/hero-port.jpg";
 
 // Static contact info (not in CMS yet)
@@ -44,22 +45,24 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const { t } = useI18n();
+
   return (
     <Layout>
-      <PageHero image={port} eyebrow="Contact" title="Parlons de votre projet" description="Demandez un devis ou posez-nous vos questions : notre équipe vous répond rapidement." />
+      <PageHero image={port} eyebrow={t("contact.hero.eyebrow")} title={t("contact.hero.title")} description={t("contact.hero.subtitle")} />
       <section className="section">
         <div className="container-esc grid gap-12 lg:grid-cols-[1fr_1.3fr]">
           <div className="space-y-8">
             <div>
-              <h3 className="flex items-center gap-2 font-display text-lg font-bold text-navy"><Phone className="h-5 w-5 text-primary" />Téléphone</h3>
+              <h3 className="flex items-center gap-2 font-display text-lg font-bold text-navy"><Phone className="h-5 w-5 text-primary" />{t("contact.phone")}</h3>
               {contact.phones.map((p) => <a key={p} href={`tel:${p.replace(/\s/g, "")}`} className="mt-2 block text-muted-foreground hover:text-primary">{p}</a>)}
             </div>
             <div>
-              <h3 className="flex items-center gap-2 font-display text-lg font-bold text-navy"><Mail className="h-5 w-5 text-primary" />E-mail</h3>
+              <h3 className="flex items-center gap-2 font-display text-lg font-bold text-navy"><Mail className="h-5 w-5 text-primary" />{t("contact.email")}</h3>
               {contact.emails.map((e) => <a key={e} href={`mailto:${e}`} className="mt-2 block text-muted-foreground hover:text-primary">{e}</a>)}
             </div>
             <div>
-              <h3 className="flex items-center gap-2 font-display text-lg font-bold text-navy"><Clock className="h-5 w-5 text-primary" />Horaires</h3>
+              <h3 className="flex items-center gap-2 font-display text-lg font-bold text-navy"><Clock className="h-5 w-5 text-primary" />{t("contact.hours")}</h3>
               {contact.hours.map((h) => <p key={h.days} className="mt-2 text-muted-foreground">{h.days} : {h.time}</p>)}
             </div>
           </div>
@@ -68,7 +71,7 @@ function ContactPage() {
       </section>
       <section className="section bg-muted/40">
         <div className="container-esc">
-          <SectionHeading eyebrow="Nos bureaux" title="Sétif & Alger" />
+          <SectionHeading eyebrow={t("contact.offices.eyebrow")} title={t("contact.offices.title")} />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {offices.map((o) => (
               <div key={o.name} className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">

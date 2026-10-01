@@ -6,6 +6,7 @@ import { Reveal } from "@/components/site/Reveal";
 import { CtaLink } from "@/components/site/Cta";
 import { MaritimeCampaignCard } from "@/components/site/MaritimeCampaignCard";
 import { AssociatedCampaignCard } from "@/components/site/AssociatedCampaignCard";
+import { useI18n } from "@/lib/i18n";
 import { maritimeCampaigns as staticMaritime, associatedCampaigns as staticAssociated, statusMeta } from "@/data/campaigns";
 import type { CampaignStatus } from "@/data/campaigns";
 
@@ -63,6 +64,7 @@ const pageStats = [
  * ================================================================= */
 function CampagnesMaritimes() {
   const { dbMaritime, dbAssociated } = Route.useLoaderData();
+  const { t } = useI18n();
 
   // Fall back to static data when Django API has no entries yet
   const maritimeCampaigns = dbMaritime && dbMaritime.length > 0 ? dbMaritime : staticMaritime;
@@ -85,20 +87,19 @@ function CampagnesMaritimes() {
 
         <div className="container-esc py-20 sm:py-28 text-center">
           <Reveal>
-            <p className="eyebrow text-navy-foreground/70">Promotions &amp; Offres spéciales</p>
+            <p className="eyebrow text-navy-foreground/70">{t("campaigns.hero.eyebrow")}</p>
             <h1 className="mt-4 font-display text-4xl font-extrabold leading-[1.05] text-navy-foreground sm:text-5xl lg:text-6xl">
-              Campagnes Maritimes
+              {t("campaigns.hero.title")}
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg text-navy-foreground/70">
-              Des réductions exclusives sur nos principales lignes maritimes — Europe, Asie, Turquie
-              et Amériques — pour optimiser vos coûts d'import-export.
+              {t("campaigns.hero.subtitle")}
             </p>
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <CtaLink to="/contact" size="lg">
-                Demander un devis
+                {t("campaigns.hero.cta1")}
               </CtaLink>
               <CtaLink to="/contact" variant="ghostLight" size="lg">
-                Nous contacter
+                {t("campaigns.hero.cta2")}
               </CtaLink>
             </div>
           </Reveal>
@@ -124,7 +125,7 @@ function CampagnesMaritimes() {
       <section className="border-b border-border bg-surface">
         <div className="container-esc flex flex-wrap items-center gap-3 py-4">
           <span className="text-xs font-semibold text-muted-foreground uppercase tracking-widest mr-2">
-            Légende :
+            {t("campaign.legend")}
           </span>
           {(["active", "limited", "upcoming", "expired"] as CampaignStatus[]).map((s) => {
             const m = statusMeta[s];
@@ -134,7 +135,7 @@ function CampagnesMaritimes() {
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${m.color}`}
               >
                 <span className={`h-1.5 w-1.5 rounded-full ${m.dot}`} />
-                {m.label}
+                {t(`campaign.status.${s}`) || m.label}
               </span>
             );
           })}
@@ -145,9 +146,9 @@ function CampagnesMaritimes() {
       <section className="section">
         <div className="container-esc">
           <SectionHeading
-            eyebrow="Campagnes maritimes"
-            title="Nos offres sur les lignes maritimes"
-            description="Bénéficiez de tarifs préférentiels sur les principales liaisons maritimes desservant l'Algérie."
+            eyebrow={t("campaigns.maritime.eyebrow")}
+            title={t("campaigns.maritime.title")}
+            description={t("campaigns.maritime.subtitle")}
           />
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-2">
@@ -164,9 +165,9 @@ function CampagnesMaritimes() {
       <section className="section bg-muted/40">
         <div className="container-esc">
           <SectionHeading
-            eyebrow="Campagnes associées"
-            title="Offres complémentaires"
-            description="Maximisez la valeur de vos expéditions maritimes avec nos packs logistiques, douaniers et d'assurance associés."
+            eyebrow={t("campaigns.associated.eyebrow")}
+            title={t("campaigns.associated.title")}
+            description={t("campaigns.associated.subtitle")}
           />
 
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -184,15 +185,15 @@ function CampagnesMaritimes() {
         <div className="container-esc text-center">
           <SectionHeading
             light
-            title="Une expédition à planifier ?"
-            description="Contactez-nous pour bénéficier de l'une de nos campagnes ou obtenir une offre personnalisée."
+            title={t("campaigns.cta.title")}
+            description={t("campaigns.cta.subtitle")}
           />
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <CtaLink to="/contact" size="lg">
-              Demander un devis
+              {t("campaigns.cta.button1")}
             </CtaLink>
             <CtaLink to="/services/transport-maritime" variant="ghostLight" size="lg">
-              Voir nos services maritimes
+              {t("campaigns.cta.button2")}
             </CtaLink>
           </div>
         </div>

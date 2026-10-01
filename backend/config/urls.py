@@ -50,7 +50,8 @@ urlpatterns = [
     # App URLs
     path("api/v1/", include("apps.users.urls")),
     path("api/v1/cms/", include("apps.cms.urls")),
-    path("api/v1/", include("apps.quotations.urls")),
+    path("api/v1/", include("apps.devis.urls")),
+    path("api/v1/shipping/", include("apps.shipping.urls")),
 ]
 
 # Serve media files in development

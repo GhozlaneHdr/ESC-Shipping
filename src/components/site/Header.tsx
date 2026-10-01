@@ -4,21 +4,24 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { CtaLink } from "./Cta";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 import { getServices } from "@/lib/api";
+import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { to: "/", label: "Accueil" },
-  { to: "/a-propos", label: "À propos" },
-  { to: "/services", label: "Services" },
-  { to: "/campagnes-maritimes", label: "Campagnes" },
-  { to: "/contact", label: "Contact" },
+  { to: "/", key: "nav.home" },
+  { to: "/a-propos", key: "nav.about" },
+  { to: "/services", key: "nav.services" },
+  { to: "/campagnes-maritimes", key: "nav.campaigns" },
+  { to: "/contact", key: "nav.contact" },
 ];
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const { t } = useI18n();
 
   const { data: services } = useQuery({
     queryKey: ["services"],
@@ -55,7 +58,7 @@ export function Header() {
 
         <nav className="hidden items-center gap-1 lg:flex" aria-label="Navigation principale">
           {navLinks.map((link) =>
-            link.label === "Services" ? (
+            link.key === "nav.services" ? (
               <div key={link.to} className="relative" onMouseLeave={() => setServicesOpen(false)}>
                 <Link
                   to="/services"
@@ -63,7 +66,7 @@ export function Header() {
                   onFocus={() => setServicesOpen(true)}
                   className="flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-primary [&.active]:text-primary"
                 >
-                  Services
+                  {t("nav.services")}
                   <ChevronDown className="h-4 w-4" />
                 </Link>
                 <div
@@ -95,15 +98,16 @@ export function Header() {
                 activeOptions={{ exact: link.to === "/" }}
                 className="rounded-full px-4 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-accent hover:text-primary [&.active]:text-primary"
               >
-                {link.label}
+                {t(link.key)}
               </Link>
             ),
           )}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden items-center gap-4 lg:flex">
+          <LanguageSwitcher />
           <CtaLink to="/contact" hash="devis">
-            Demander un devis
+            {t("home.hero.cta")}
           </CtaLink>
         </div>
 
@@ -134,7 +138,7 @@ export function Header() {
               activeOptions={{ exact: link.to === "/" }}
               className="block rounded-xl px-4 py-3 font-display text-lg font-semibold text-navy transition-colors hover:bg-accent hover:text-primary"
             >
-              {link.label}
+              {t(link.key)}
             </Link>
           ))}
           <div className="mt-2 rounded-2xl bg-surface p-3">

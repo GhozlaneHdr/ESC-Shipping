@@ -3,8 +3,10 @@ import { Facebook, Mail, MapPin, Phone } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Logo } from "./Logo";
 import { getServices } from "@/lib/api";
+import { useI18n } from "@/lib/i18n";
 
 export function Footer() {
+  const { t } = useI18n();
   const { data: services } = useQuery({
     queryKey: ["services"],
     queryFn: getServices,
@@ -33,8 +35,7 @@ export function Footer() {
         <div className="lg:col-span-4">
           <Logo light />
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-navy-foreground/70">
-            Express Shipping Company — Votre partenaire logistique pour des solutions de fret
-            fiables, rapides et sécurisées.
+            {t("footer.tagline")}
           </p>
           <a
             href={contact.facebook}
@@ -49,18 +50,18 @@ export function Footer() {
 
         <div className="lg:col-span-2">
           <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy-foreground">
-            Navigation
+            {t("footer.navigation")}
           </h3>
           <ul className="mt-5 space-y-3 text-sm text-navy-foreground/70">
             {[
-              { to: "/", label: "Accueil" },
-              { to: "/a-propos", label: "À propos" },
-              { to: "/services", label: "Services" },
-              { to: "/contact", label: "Contact" },
+              { to: "/", key: "nav.home" },
+              { to: "/a-propos", key: "nav.about" },
+              { to: "/services", key: "nav.services" },
+              { to: "/contact", key: "nav.contact" },
             ].map((l) => (
               <li key={l.to}>
                 <Link to={l.to} className="transition-colors hover:text-primary-foreground">
-                  {l.label}
+                  {t(l.key)}
                 </Link>
               </li>
             ))}
@@ -69,7 +70,7 @@ export function Footer() {
 
         <div className="lg:col-span-3">
           <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy-foreground">
-            Services
+            {t("footer.services")}
           </h3>
           <ul className="mt-5 space-y-3 text-sm text-navy-foreground/70">
             {(services || []).map((s) => (
@@ -84,7 +85,7 @@ export function Footer() {
 
         <div className="lg:col-span-3">
           <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy-foreground">
-            Contact
+            {t("footer.contact")}
           </h3>
           <ul className="mt-5 space-y-3 text-sm text-navy-foreground/70">
             {contact.phones.map((p) => (
@@ -123,20 +124,17 @@ export function Footer() {
         <div className="container-esc flex flex-col items-center gap-2 py-5 text-xs text-navy-foreground/60 sm:flex-row sm:justify-between">
           {/* Left — copyright */}
           <p className="text-center sm:text-left">
-            © 2026 ESC — Express Shipping Company. Tous droits réservés.
+            {t("footer.copyright")}
           </p>
 
           {/* Centre — designer credit */}
           <p className="text-center">
-            Designed &amp; Developed by&nbsp;
-            <span className="font-semibold text-navy-foreground/80">IntellectSoft</span>
-            &nbsp;—&nbsp;
-            <span className="font-semibold text-navy-foreground/80">Zetoutou Faycal</span>
+            {t("footer.credit")}
           </p>
 
           {/* Right — location */}
           <p className="text-center sm:text-right">
-            Transitaire &amp; commissionnaire — Sétif · Alger
+            {t("footer.location")}
           </p>
         </div>
       </div>

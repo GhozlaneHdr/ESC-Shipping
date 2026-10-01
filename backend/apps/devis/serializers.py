@@ -1,20 +1,20 @@
 """
-Serializers for Quotation model.
+Serializers for Devis model.
 """
 
 from rest_framework import serializers
 
-from .models import Quotation, QuotationStatus
+from .models import Devis
 
 
-class QuotationCreateSerializer(serializers.ModelSerializer):
+class DevisCreateSerializer(serializers.ModelSerializer):
     """
-    Serializer for creating a new quotation request.
+    Serializer for creating a new devis request.
     Used by the public API endpoint.
     """
 
     class Meta:
-        model = Quotation
+        model = Devis
         fields = [
             "full_name",
             "company",
@@ -28,39 +28,39 @@ class QuotationCreateSerializer(serializers.ModelSerializer):
 
     def validate_full_name(self, value):
         if len(value.strip()) < 2:
-            raise serializers.ValidationError("Name must be at least 2 characters.")
+            raise serializers.ValidationError("Le nom doit contenir au moins 2 caractères.")
         return value.strip()
 
     def validate_phone(self, value):
         if len(value.strip()) < 6:
-            raise serializers.ValidationError("Please enter a valid phone number.")
+            raise serializers.ValidationError("Veuillez entrer un numéro de téléphone valide.")
         return value.strip()
 
     def validate_service_type(self, value):
         if len(value.strip()) < 1:
-            raise serializers.ValidationError("Please select a service type.")
+            raise serializers.ValidationError("Veuillez sélectionner un type de service.")
         return value.strip()
 
     def validate_departure(self, value):
         if len(value.strip()) < 2:
-            raise serializers.ValidationError("Please enter a departure location.")
+            raise serializers.ValidationError("Veuillez indiquer un lieu de départ.")
         return value.strip()
 
     def validate_destination(self, value):
         if len(value.strip()) < 2:
-            raise serializers.ValidationError("Please enter a destination.")
+            raise serializers.ValidationError("Veuillez indiquer une destination.")
         return value.strip()
 
 
-class QuotationDetailSerializer(serializers.ModelSerializer):
+class DevisDetailSerializer(serializers.ModelSerializer):
     """
-    Serializer for detailed quotation view (admin use).
+    Serializer for detailed devis view (admin use).
     """
 
     status_display = serializers.CharField(source="get_status_display", read_only=True)
 
     class Meta:
-        model = Quotation
+        model = Devis
         fields = [
             "id",
             "full_name",
@@ -80,11 +80,11 @@ class QuotationDetailSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "status", "created_at", "updated_at"]
 
 
-class QuotationUpdateSerializer(serializers.ModelSerializer):
+class DevisUpdateSerializer(serializers.ModelSerializer):
     """
-    Serializer for updating quotation status (admin use).
+    Serializer for updating devis status (admin use).
     """
 
     class Meta:
-        model = Quotation
+        model = Devis
         fields = ["status", "admin_notes"]

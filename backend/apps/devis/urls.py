@@ -1,14 +1,14 @@
 """
-URL configuration for Quotation management.
+URL configuration for Devis management.
 """
 
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import QuotationViewSet
+from .views import DevisViewSet
 
 router = DefaultRouter()
-router.register(r"quotations", QuotationViewSet, basename="quotation")
+router.register(r"devis", DevisViewSet, basename="devis")
 
 urlpatterns = [
     path("", include(router.urls)),

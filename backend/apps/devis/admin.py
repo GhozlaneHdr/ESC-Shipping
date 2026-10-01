@@ -1,15 +1,15 @@
 """
-Admin configuration for Quotation model.
+Admin configuration for Devis model.
 """
 
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from .models import Quotation, QuotationStatus
+from .models import Devis, DevisStatus
 
 
-@admin.register(Quotation)
-class QuotationAdmin(admin.ModelAdmin):
+@admin.register(Devis)
+class DevisAdmin(admin.ModelAdmin):
     list_display = [
         "full_name",
         "company",
@@ -25,16 +25,16 @@ class QuotationAdmin(admin.ModelAdmin):
     readonly_fields = ["id", "created_at", "updated_at"]
 
     fieldsets = (
-        (_("Client Information"), {
+        (_("Informations client"), {
             "fields": ("full_name", "company", "email", "phone"),
         }),
-        (_("Service Details"), {
+        (_("Détails du service"), {
             "fields": ("service_type", "departure", "destination", "message"),
         }),
-        (_("Status"), {
+        (_("Statut"), {
             "fields": ("status", "admin_notes"),
         }),
-        (_("Timestamps"), {
+        (_("Horodatage"), {
             "fields": ("created_at", "updated_at"),
             "classes": ("collapse",),
         }),
@@ -42,18 +42,18 @@ class QuotationAdmin(admin.ModelAdmin):
 
     actions = ["mark_as_in_review", "mark_as_quoted", "mark_as_accepted", "mark_as_rejected"]
 
-    @admin.action(description=_("Mark selected quotations as In Review"))
+    @admin.action(description=_("Marquer comme En cours d'étude"))
     def mark_as_in_review(self, request, queryset):
-        queryset.update(status=QuotationStatus.IN_REVIEW)
+        queryset.update(status=DevisStatus.IN_REVIEW)
 
-    @admin.action(description=_("Mark selected quotations as Quoted"))
+    @admin.action(description=_("Marquer comme Devis envoyé"))
     def mark_as_quoted(self, request, queryset):
-        queryset.update(status=QuotationStatus.QUOTED)
+        queryset.update(status=DevisStatus.QUOTED)
 
-    @admin.action(description=_("Mark selected quotations as Accepted"))
+    @admin.action(description=_("Marquer comme Accepté"))
     def mark_as_accepted(self, request, queryset):
-        queryset.update(status=QuotationStatus.ACCEPTED)
+        queryset.update(status=DevisStatus.ACCEPTED)
 
-    @admin.action(description=_("Mark selected quotations as Rejected"))
+    @admin.action(description=_("Marquer comme Refusé"))
     def mark_as_rejected(self, request, queryset):
-        queryset.update(status=QuotationStatus.REJECTED)
+        queryset.update(status=DevisStatus.REJECTED)

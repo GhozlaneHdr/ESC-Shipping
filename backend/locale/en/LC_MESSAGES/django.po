@@ -1,0 +1,135 @@
+# English translations for ESC Shipping backend.
+msgid ""
+msgstr ""
+"Project-Id-Version: ESC Shipping 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-01 20:00+0000\n"
+"PO-Revision-Date: 2026-10-01 20:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# Devis model
+msgid "Devis"
+msgstr "Quote"
+
+msgid "Nom complet"
+msgstr "Full Name"
+
+msgid "Nom complet du client."
+msgstr "Client's full name."
+
+msgid "Société"
+msgstr "Company"
+
+msgid "Nom de la société (optionnel)."
+msgstr "Company name (optional)."
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Adresse email du client."
+msgstr "Client's email address."
+
+msgid "Téléphone"
+msgstr "Phone"
+
+msgid "Numéro de téléphone du client."
+msgstr "Client's phone number."
+
+msgid "Type de service"
+msgstr "Service Type"
+
+msgid "Type de service demandé."
+msgstr "Type of service requested."
+
+msgid "Départ"
+msgstr "Departure"
+
+msgid "Ville ou pays de départ."
+msgstr "City or country of departure."
+
+msgid "Destination"
+msgstr "Destination"
+
+msgid "Ville ou pays de destination."
+msgstr "City or country of destination."
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Détails supplémentaires sur l'expédition."
+msgstr "Additional details about the shipment."
+
+msgid "Statut"
+msgstr "Status"
+
+msgid "Statut actuel de la demande de devis."
+msgstr "Current status of the quote request."
+
+msgid "Notes admin"
+msgstr "Admin Notes"
+
+msgid "Notes internes (non visibles par le client)."
+msgstr "Internal notes (not visible to client)."
+
+msgid "Créé le"
+msgstr "Created At"
+
+msgid "Mis à jour le"
+msgstr "Updated At"
+
+# Devis statuses
+msgid "Nouveau"
+msgstr "New"
+
+msgid "En cours d'étude"
+msgstr "In Review"
+
+msgid "Devis envoyé"
+msgstr "Quoted"
+
+msgid "Accepté"
+msgstr "Accepted"
+
+msgid "Refusé"
+msgstr "Rejected"
+
+msgid "Archivé"
+msgstr "Archived"
+
+# Admin actions
+msgid "Marquer comme En cours d'étude"
+msgstr "Mark as In Review"
+
+msgid "Marquer comme Devis envoyé"
+msgstr "Mark as Quoted"
+
+msgid "Marquer comme Accepté"
+msgstr "Mark as Accepted"
+
+msgid "Marquer comme Refusé"
+msgstr "Mark as Rejected"
+
+# Serializer validation messages
+msgid "Le nom doit contenir au moins 2 caractères."
+msgstr "Name must be at least 2 characters."
+
+msgid "Veuillez entrer un numéro de téléphone valide."
+msgstr "Please enter a valid phone number."
+
+msgid "Veuillez sélectionner un type de service."
+msgstr "Please select a service type."
+
+msgid "Veuillez indiquer un lieu de départ."
+msgstr "Please enter a departure location."
+
+msgid "Veuillez indiquer une destination."
+msgstr "Please enter a destination."
+
+# API messages
+msgid "Votre demande de devis a été enregistrée avec succès. Notre équipe vous recontacte rapidement."
+msgstr "Your quote request has been saved successfully. Our team will contact you shortly."

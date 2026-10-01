@@ -1,11 +1,11 @@
-Bonjour {{ quotation.full_name }},
+Bonjour {{ devis.full_name }},
 
 Merci pour votre demande de devis auprès d'Express Shipping Company (ESC).
 
 Nous avons bien reçu votre demande concernant le service suivant:
-- Service: {{ quotation.service_type }}
-- Départ: {{ quotation.departure }}
-- Destination: {{ quotation.destination }}
+- Service: {{ devis.service_type }}
+- Départ: {{ devis.departure }}
+- Destination: {{ devis.destination }}
 
 Notre équipe va étudier votre demande et reviendra vers vous dans les plus brefs délais avec une proposition adaptée.
 

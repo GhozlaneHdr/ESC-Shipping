@@ -3,6 +3,7 @@ import { Layout } from "@/components/site/Layout";
 import { PageHero } from "@/components/site/PageHero";
 import { ServiceCard } from "@/components/site/ServiceCard";
 import { Reveal } from "@/components/site/Reveal";
+import { useI18n } from "@/lib/i18n";
 import { services as staticServices } from "@/data/site";
 import port from "@/assets/svc-maritime.jpg";
 
@@ -31,11 +32,12 @@ export const Route = createFileRoute("/services/")({
 
 function ServicesPage() {
   const { dbServices } = Route.useLoaderData();
+  const { t } = useI18n();
   const displayServices = dbServices && dbServices.length > 0 ? dbServices : staticServices;
 
   return (
     <Layout>
-      <PageHero image={port} eyebrow="Services" title="Nos services logistiques" description="Une offre complète pour organiser, sécuriser et accélérer vos expéditions." />
+      <PageHero image={port} eyebrow={t("services.hero.eyebrow")} title={t("services.hero.title")} description={t("services.hero.subtitle")} />
       <section className="section">
         <div className="container-esc grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {displayServices.map((s: any, i: number) => (

@@ -51,29 +51,40 @@ export interface Service {
 export interface MaritimeCampaign {
   id: string;
   title: string;
+  title_en?: string;
   subtitle: string;
-  route_from: string;
-  route_to: string;
+  subtitle_en?: string;
+  route_from?: string;
+  route_to?: string;
+  route?: { from: string; to: string };
   discount: string;
   description: string;
-  highlights: string;
-  highlights_list: string[];
-  valid_until: string;
+  description_en?: string;
+  highlights?: string[] | string;
+  highlights_en?: string[];
+  highlights_list?: string[];
+  valid_until?: string;
+  validUntil?: string;
   status: string;
-  is_published: boolean;
-  created_at: string;
+  is_published?: boolean;
+  created_at?: string;
 }
 
 export interface AssociatedCampaign {
   id: string;
   category: string;
+  category_en?: string;
   title: string;
+  title_en?: string;
   description: string;
+  description_en?: string;
   badge: string;
+  badge_en?: string;
   status: string;
-  valid_until: string;
-  is_published: boolean;
-  created_at: string;
+  valid_until?: string;
+  validUntil?: string;
+  is_published?: boolean;
+  created_at?: string;
 }
 
 export interface TrustedPartner {
