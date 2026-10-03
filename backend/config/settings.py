@@ -30,7 +30,11 @@ def configured_url(name, default):
 
 SECRET_KEY = config("DJANGO_SECRET_KEY", default="django-insecure-dev-key")
 DEBUG = config("DJANGO_DEBUG", default=True, cast=bool)
-ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv())
+ALLOWED_HOSTS = config(
+    "DJANGO_ALLOWED_HOSTS",
+    default="localhost,127.0.0.1,website.ex-shipping.com,www.website.ex-shipping.com",
+    cast=Csv(),
+)
 
 # When Django is behind a reverse proxy (Nginx, Apache or a hosting panel),
 # preserve the original HTTPS scheme and host forwarded by that proxy.
