@@ -62,6 +62,11 @@ const translations: Record<Locale, Record<string, string>> = {
     "home.why.3": "Maîtrise des procédures douanières et portuaires algériennes",
     "home.why.4": "Réseau de partenaires dans le monde entier",
 
+    "home.offices.eyebrow": "Nos implantations",
+    "home.offices.title": "Deux bureaux, un même engagement",
+    "home.offices.subtitle": "À Sétif comme à Alger, nos équipes sont proches de vos opérations pour vous accompagner avec réactivité.",
+    "home.offices.cta": "Voir nos coordonnées",
+
     "home.cta.title": "Un projet d'expédition ?",
     "home.cta.subtitle": "Parlez-nous de votre besoin, nous revenons vers vous rapidement avec une solution adaptée.",
     "home.cta.button": "Demander un devis",
@@ -160,8 +165,8 @@ const translations: Record<Locale, Record<string, string>> = {
     "modal.validUntil": "Offre valide jusqu'au",
 
     // Partners
-    "partners.eyebrow": "Ils nous font confiance",
-    "partners.title": "Nos partenaires & clients",
+    "partners.eyebrow": "Lignes maritimes partenaires",
+    "partners.title": "Les compagnies qui acheminent vos marchandises",
   },
   en: {
     // Navigation
@@ -208,6 +213,11 @@ const translations: Record<Locale, Record<string, string>> = {
     "home.why.2": "A single contact for your entire file",
     "home.why.3": "Expertise in Algerian customs and port procedures",
     "home.why.4": "Network of partners worldwide",
+
+    "home.offices.eyebrow": "Our locations",
+    "home.offices.title": "Two offices, one commitment",
+    "home.offices.subtitle": "From Setif to Algiers, our teams stay close to your operations and ready to support you.",
+    "home.offices.cta": "View contact details",
 
     "home.cta.title": "A shipment to plan?",
     "home.cta.subtitle": "Tell us about your needs, we'll get back to you quickly with a tailored solution.",
@@ -307,8 +317,8 @@ const translations: Record<Locale, Record<string, string>> = {
     "modal.validUntil": "Offer valid until",
 
     // Partners
-    "partners.eyebrow": "They trust us",
-    "partners.title": "Our partners & clients",
+    "partners.eyebrow": "Maritime line partners",
+    "partners.title": "The carriers moving your goods",
   },
 };
 

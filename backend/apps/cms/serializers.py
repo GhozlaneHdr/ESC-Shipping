@@ -9,6 +9,7 @@ from .models import (
     MaritimeCampaign,
     Service,
     ServiceStep,
+    SiteBranding,
     Stat,
     TrustedPartner,
 )
@@ -52,6 +53,12 @@ class ServiceSerializer(serializers.ModelSerializer):
 
     def get_why_us_list(self, obj):
         return [line.strip() for line in obj.why_us.split("\n") if line.strip()]
+
+
+class SiteBrandingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SiteBranding
+        fields = ["id", "logo", "hero_video"]
 
 
 class MaritimeCampaignSerializer(serializers.ModelSerializer):

@@ -80,6 +80,25 @@ class Service(models.Model):
     def __str__(self):
         return self.name
 
+
+class SiteBranding(models.Model):
+    """Admin-managed brand assets used throughout the website."""
+    id = models.PositiveSmallIntegerField(primary_key=True, default=1, editable=False)
+    logo = models.ImageField(upload_to="branding/")
+    hero_video = models.FileField(
+        upload_to="branding/",
+        blank=True,
+        null=True,
+        help_text="Optional looping video for the homepage hero background.",
+    )
+
+    class Meta:
+        verbose_name = "Site branding"
+        verbose_name_plural = "Site branding"
+
+    def __str__(self):
+        return "ESC site branding"
+
 class ServiceStep(models.Model):
     """Steps involved in a specific service."""
     service = models.ForeignKey(Service, on_delete=models.CASCADE, related_name="steps")

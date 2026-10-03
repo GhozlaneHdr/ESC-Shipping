@@ -13,7 +13,6 @@ const navLinks = [
   { to: "/", key: "nav.home" },
   { to: "/a-propos", key: "nav.about" },
   { to: "/services", key: "nav.services" },
-  { to: "/campagnes-maritimes", key: "nav.campaigns" },
   { to: "/contact", key: "nav.contact" },
 ];
 

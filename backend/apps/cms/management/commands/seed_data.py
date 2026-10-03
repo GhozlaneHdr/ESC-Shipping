@@ -12,10 +12,15 @@ Usage:
 
 import os
 import shutil
+from urllib.request import Request, urlopen
 from pathlib import Path
+
+from io import BytesIO
+from PIL import Image
 
 from django.conf import settings
 from django.core.files import File
+from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 from django.db import transaction
 
@@ -24,6 +29,7 @@ from apps.cms.models import (
     MaritimeCampaign,
     Service,
     ServiceStep,
+    SiteBranding,
     Stat,
     TrustedPartner,
 )
@@ -318,12 +324,15 @@ STATS = [
 ]
 
 TRUSTED_PARTNERS = [
-    {"name": "GlobalTrans", "order": 1},
-    {"name": "MediLog", "order": 2},
-    {"name": "AlphaFreight", "order": 3},
-    {"name": "NexusPort", "order": 4},
-    {"name": "BlueRoute", "order": 5},
-    {"name": "SeaLink", "order": 6},
+    {"name": "MSC", "domain": "msc.com", "order": 1},
+    {"name": "COSCO Shipping", "domain": "lines.coscoshipping.com", "order": 2},
+    {"name": "CMA CGM", "domain": "cma-cgm.com", "order": 3},
+    {"name": "AKKON Lines", "domain": "akkonlines.com", "order": 4},
+    {"name": "Maersk", "domain": "maersk.com", "order": 5},
+    {"name": "Hapag-Lloyd", "domain": "www.hapag-lloyd.com", "order": 6},
+    {"name": "ONE", "domain": "one-line.com", "order": 7},
+    {"name": "Evergreen", "domain": "www.evergreen-marine.com", "order": 8},
+    {"name": "Turkon Line", "domain": "turkon.com", "order": 9},
 ]
 
 USERS = [
@@ -387,6 +396,8 @@ FRONTEND_IMAGES = {
     "svc-routier.jpg": "svc-routier.jpg",
 }
 
+BRANDING_IMAGE = "logo.png"
+
 
 class Command(BaseCommand):
     help = "Seed the database with front-end mock data and create default users."
@@ -408,6 +419,7 @@ class Command(BaseCommand):
         with transaction.atomic():
             self._seed_users()
             self._seed_services()
+            self._seed_branding()
             self._seed_maritime_campaigns()
             self._seed_associated_campaigns()
             self._seed_stats()
@@ -420,6 +432,7 @@ class Command(BaseCommand):
         """Delete all existing data."""
         ServiceStep.objects.all().delete()
         Service.objects.all().delete()
+        SiteBranding.objects.all().delete()
         MaritimeCampaign.objects.all().delete()
         AssociatedCampaign.objects.all().delete()
         Stat.objects.all().delete()
@@ -501,6 +514,20 @@ class Command(BaseCommand):
             else:
                 self.stdout.write(f"  Exists:  {service.name}")
 
+    def _seed_branding(self):
+        """Create or update the admin-managed site logo."""
+        self.stdout.write(self.style.MIGRATE_HEADING("\nCreating Site Branding..."))
+        frontend_assets = Path(settings.BASE_DIR).parent / "src" / "assets"
+        src_image = frontend_assets / BRANDING_IMAGE
+        if not src_image.exists():
+            self.stdout.write(self.style.WARNING(f"  Logo not found: {src_image}"))
+            return
+
+        branding, created = SiteBranding.objects.get_or_create(pk=1)
+        with open(src_image, "rb") as image_file:
+            branding.logo.save(BRANDING_IMAGE, File(image_file), save=True)
+        self.stdout.write(self.style.SUCCESS(f"  {'Created' if created else 'Updated'}: site logo"))
+
     def _seed_maritime_campaigns(self):
         """Create maritime campaigns."""
         self.stdout.write(self.style.MIGRATE_HEADING("\nCreating Maritime Campaigns..."))
@@ -553,17 +580,52 @@ class Command(BaseCommand):
     def _seed_partners(self):
         """Create trusted partners."""
         self.stdout.write(self.style.MIGRATE_HEADING("\nCreating Trusted Partners..."))
+        TrustedPartner.objects.exclude(
+            name__in=[partner["name"] for partner in TRUSTED_PARTNERS]
+        ).delete()
         for partner_data in TRUSTED_PARTNERS:
+            domain = partner_data.pop("domain")
             partner, created = TrustedPartner.objects.get_or_create(
                 name=partner_data["name"],
                 defaults=partner_data,
             )
+            self._download_partner_logo(partner, domain)
             if created:
                 self.stdout.write(
-                    self.style.SUCCESS(f"  Created: {partner.name}")
+                    self.style.SUCCESS(f"  Created: {partner.name} (logo fetched)")
                 )
             else:
                 self.stdout.write(f"  Exists:  {partner.name}")
+
+    def _download_partner_logo(self, partner, domain):
+        """Fetch the carrier favicon from its official domain into media storage."""
+        logo_url = f"https://www.google.com/s2/favicons?domain={domain}&sz=512"
+        try:
+            request = Request(logo_url, headers={"User-Agent": "ESC Shipping seed command"})
+            with urlopen(request, timeout=15) as response:
+                logo_data = response.read()
+            filename = f"{partner.name.lower().replace(' ', '-').replace('/', '-')}.png"
+            with Image.open(BytesIO(logo_data)) as image:
+                if image.width < 64 or image.height < 32:
+                    self._restore_best_partner_logo(partner, filename)
+                    return
+            partner.logo.save(filename, ContentFile(logo_data), save=True)
+        except Exception as error:
+            self.stdout.write(
+                self.style.WARNING(f"  Logo unavailable for {partner.name}: {error}")
+            )
+
+    def _restore_best_partner_logo(self, partner, filename):
+        """Keep the largest existing local mark when a provider returns a tiny icon."""
+        media_dir = Path(settings.MEDIA_ROOT) / "partners"
+        stem = Path(filename).stem
+        candidates = list(media_dir.glob(f"{stem}*.png"))
+        if not candidates:
+            return
+
+        best = max(candidates, key=lambda path: path.stat().st_size)
+        partner.logo.name = f"partners/{best.name}"
+        partner.save(update_fields=["logo"])
 
     def _print_summary(self):
         """Print a summary of seeded data."""

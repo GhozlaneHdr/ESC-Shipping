@@ -8,10 +8,13 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { I18nProvider } from "../lib/i18n";
+import { getBranding } from "../lib/api";
+import fallbackLogo from "../assets/logo.png";
 
 function NotFoundComponent() {
   return (
@@ -87,7 +90,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: fallbackLogo, type: "image/png" },
     ],
   }),
   shellComponent: RootShell,
@@ -118,10 +121,26 @@ function RootComponent() {
   return (
     <I18nProvider>
       <QueryClientProvider client={queryClient}>
+        <BrandingHead />
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
         <Toaster position="top-right" richColors />
       </QueryClientProvider>
     </I18nProvider>
   );
+}
+
+function BrandingHead() {
+  const { data: branding } = useQuery({
+    queryKey: ["branding"],
+    queryFn: getBranding,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  useEffect(() => {
+    const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+    if (favicon) favicon.href = branding?.logo || fallbackLogo;
+  }, [branding]);
+
+  return null;
 }

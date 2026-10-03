@@ -9,6 +9,7 @@ from .models import (
     AssociatedCampaign,
     MaritimeCampaign,
     Service,
+    SiteBranding,
     Stat,
     TrustedPartner,
 )
@@ -16,6 +17,7 @@ from .serializers import (
     AssociatedCampaignSerializer,
     MaritimeCampaignSerializer,
     ServiceSerializer,
+    SiteBrandingSerializer,
     StatSerializer,
     TrustedPartnerSerializer,
 )
@@ -28,6 +30,12 @@ class ServiceViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ServiceSerializer
     permission_classes = [AllowAny]
     lookup_field = "slug"
+
+
+class SiteBrandingViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = SiteBranding.objects.all()
+    serializer_class = SiteBrandingSerializer
+    permission_classes = [AllowAny]
 
 
 class MaritimeCampaignViewSet(viewsets.ReadOnlyModelViewSet):

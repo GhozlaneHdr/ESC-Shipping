@@ -1,5 +1,5 @@
 /**
- * PartnersMarquee — infinite horizontal scrolling partner logos strip.
+ * PartnersMarquee — infinite horizontal scrolling maritime carrier wordmarks.
  * Fetches partner data from the Django API.
  */
 
@@ -48,7 +48,7 @@ function PartnerItem({ partner }: { partner: TrustedPartner }) {
     <div
       title={partner.name}
       className={cn(
-        "mx-10 flex shrink-0 items-center",
+        "mx-10 flex h-16 min-w-40 shrink-0 items-center justify-center rounded-lg bg-white px-5",
         "opacity-40 grayscale transition-all duration-500 ease-out",
         "hover:opacity-100 hover:grayscale-0",
       )}
@@ -57,7 +57,7 @@ function PartnerItem({ partner }: { partner: TrustedPartner }) {
         <img
           src={partner.logo}
           alt={partner.name}
-          className="h-10 w-auto object-contain"
+          className="max-h-12 max-w-36 w-auto object-contain"
           loading="lazy"
         />
       ) : (

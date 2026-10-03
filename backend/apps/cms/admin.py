@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import MaritimeCampaign, AssociatedCampaign, Service, ServiceStep, Stat, TrustedPartner
+from .models import AssociatedCampaign, MaritimeCampaign, Service, ServiceStep, SiteBranding, Stat, TrustedPartner
 
 @admin.register(MaritimeCampaign)
 class MaritimeCampaignAdmin(admin.ModelAdmin):
@@ -26,6 +26,14 @@ class ServiceAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     inlines = [ServiceStepInline]
     ordering = ["order", "name"]
+
+
+@admin.register(SiteBranding)
+class SiteBrandingAdmin(admin.ModelAdmin):
+    list_display = ["__str__", "logo", "hero_video"]
+
+    def has_add_permission(self, request):
+        return not SiteBranding.objects.exists()
 
 @admin.register(Stat)
 class StatAdmin(admin.ModelAdmin):

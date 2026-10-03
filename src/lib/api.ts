@@ -48,6 +48,12 @@ export interface Service {
   order: number;
 }
 
+export interface SiteBranding {
+  id: number;
+  logo: string;
+  hero_video: string | null;
+}
+
 export interface MaritimeCampaign {
   id: string;
   title: string;
@@ -112,6 +118,11 @@ export async function getServices(): Promise<Service[]> {
 
 export async function getServiceBySlug(slug: string): Promise<Service> {
   return fetchFromAPI<Service>(`/cms/services/${slug}/`);
+}
+
+export async function getBranding(): Promise<SiteBranding | null> {
+  const data = await fetchFromAPI<{ results: SiteBranding[] }>("/cms/branding/");
+  return data.results[0] ?? null;
 }
 
 export async function getMaritimeCampaigns(): Promise<MaritimeCampaign[]> {

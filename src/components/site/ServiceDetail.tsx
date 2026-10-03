@@ -7,6 +7,7 @@ import { Reveal } from "./Reveal";
 import { ServiceCard } from "./ServiceCard";
 import { QuoteForm } from "./QuoteForm";
 import { getServiceBySlug, getServices } from "@/lib/api";
+import { services as staticServices } from "@/data/site";
 
 export function serviceHead(slug: string) {
   const title = `Service — Express Shipping Company`;
@@ -19,7 +20,7 @@ export function serviceHead(slug: string) {
 }
 
 export function ServiceDetail({ slug }: { slug: string }) {
-  const { data: service, isLoading } = useQuery({
+  const { data: apiService, isLoading } = useQuery({
     queryKey: ["service", slug],
     queryFn: () => getServiceBySlug(slug),
   });
@@ -29,11 +30,31 @@ export function ServiceDetail({ slug }: { slug: string }) {
     queryFn: getServices,
   });
 
-  if (isLoading || !service) {
+  const staticService = staticServices.find((item) => item.slug === slug);
+  const service = apiService ?? (staticService ? {
+    ...staticService,
+    short_description: staticService.short,
+    long_intro: staticService.intro,
+    benefits_list: staticService.benefits,
+    why_us_list: staticService.why,
+    steps: staticService.steps,
+  } : null);
+
+  if (isLoading && !service) {
     return (
       <Layout>
         <div className="container-esc py-20 text-center">
           <p className="text-muted-foreground">Chargement...</p>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!service) {
+    return (
+      <Layout>
+        <div className="container-esc py-20 text-center">
+          <p className="text-muted-foreground">Service introuvable.</p>
         </div>
       </Layout>
     );
@@ -49,6 +70,7 @@ export function ServiceDetail({ slug }: { slug: string }) {
       <section className="section">
         <div className="container-esc grid gap-12 lg:grid-cols-2">
           <div>
+            <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground">{service.long_intro}</p>
             <SectionHeading align="left" eyebrow="Ce que nous proposons" title="Les points clés" />
             <ul className="mt-8 space-y-4">
               {service.benefits_list.map((b: string) => (

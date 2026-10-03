@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, Phone } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { CheckCircle2, MapPin, Phone } from "lucide-react";
 import { Layout } from "@/components/site/Layout";
 import { CtaLink, CtaAnchor } from "@/components/site/Cta";
 import { SectionHeading } from "@/components/site/SectionHeading";
@@ -8,7 +9,8 @@ import { Reveal } from "@/components/site/Reveal";
 import { Counter } from "@/components/site/Counter";
 import { PartnersMarquee } from "@/components/site/PartnersMarquee";
 import { useI18n } from "@/lib/i18n";
-import { services as staticServices, stats as staticStats, contact } from "@/data/site";
+import { getBranding } from "@/lib/api";
+import { services as staticServices, stats as staticStats, contact, offices } from "@/data/site";
 import hero from "@/assets/hero-port.jpg";
 import team from "@/assets/about-team.jpg";
 
@@ -46,6 +48,11 @@ export const Route = createFileRoute("/")({
 function Home() {
   const { dbStats, dbServices } = Route.useLoaderData();
   const { t } = useI18n();
+  const { data: branding } = useQuery({
+    queryKey: ["branding"],
+    queryFn: getBranding,
+    staleTime: 5 * 60 * 1000,
+  });
 
   const displayStats = dbStats && dbStats.length > 0 ? dbStats : staticStats;
   const displayServices = dbServices && dbServices.length > 0 ? dbServices : staticServices;
@@ -54,6 +61,19 @@ function Home() {
     <Layout>
       <section className="relative isolate -mt-20 overflow-hidden bg-navy pt-20">
         <img src={hero} alt="Port de commerce" className="absolute inset-0 -z-10 h-full w-full object-cover opacity-40" />
+        {branding?.hero_video ? (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            poster={hero}
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 h-full w-full object-cover opacity-40"
+          >
+            <source src={branding.hero_video} />
+          </video>
+        ) : null}
         <div className="absolute inset-0 -z-10 bg-gradient-to-r from-navy via-navy/80 to-transparent" />
         <div className="container-esc py-28 sm:py-40">
           <p className="eyebrow text-navy-foreground/70">{t("home.hero.eyebrow")}</p>
@@ -109,6 +129,39 @@ function Home() {
               ))}
             </ul>
             <CtaLink to="/a-propos" variant="outline" className="mt-10">{t("common.learnMore")}</CtaLink>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container-esc">
+          <SectionHeading
+            eyebrow={t("home.offices.eyebrow")}
+            title={t("home.offices.title")}
+            description={t("home.offices.subtitle")}
+          />
+          <div className="mt-14 grid gap-6 md:grid-cols-2">
+            {offices.map((office) => (
+              <Reveal key={office.name} className="overflow-hidden rounded-2xl border border-border bg-card shadow-card">
+                <iframe
+                  title={office.name}
+                  src={office.map}
+                  className="h-56 w-full border-0"
+                  loading="lazy"
+                />
+                <div className="p-6">
+                  <h3 className="font-display text-xl font-bold text-navy">{office.name}</h3>
+                  <p className="mt-3 flex gap-2 text-sm leading-relaxed text-muted-foreground">
+                    <MapPin className="h-4 w-4 shrink-0 text-primary" />
+                    {office.address}
+                  </p>
+                  <p className="mt-3 text-sm text-muted-foreground">{office.phones.slice(0, 2).join(" · ")}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <CtaLink to="/contact" variant="outline">{t("home.offices.cta")}</CtaLink>
           </div>
         </div>
       </section>
