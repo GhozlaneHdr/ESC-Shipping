@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AssociatedCampaign, MaritimeCampaign, Service, ServiceStep, SiteBranding, Stat, TrustedPartner
+from .models import AssociatedCampaign, MaritimeCampaign, Service, ServiceStep, SiteBranding, Stat, TrustedPartner, ResourceItem
 
 @admin.register(MaritimeCampaign)
 class MaritimeCampaignAdmin(admin.ModelAdmin):
@@ -47,3 +47,12 @@ class TrustedPartnerAdmin(admin.ModelAdmin):
     list_editable = ["order", "is_active"]
     search_fields = ["name"]
     ordering = ["order", "name"]
+
+
+@admin.register(ResourceItem)
+class ResourceItemAdmin(admin.ModelAdmin):
+    list_display = ["title", "resource_type", "is_published", "order"]
+    list_editable = ["is_published", "order"]
+    list_filter = ["resource_type", "is_published"]
+    search_fields = ["title", "summary"]
+    prepopulated_fields = {"slug": ("title",)}

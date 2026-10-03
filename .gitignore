@@ -3,6 +3,11 @@ node_modules/
 
 # Build output
 dist/
+.output/
+.wrangler/
+
+# Local deployment bundle
+backend/requirements.zip
 
 # Environment
 .env

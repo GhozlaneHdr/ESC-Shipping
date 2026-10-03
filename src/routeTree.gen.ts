@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AProposRouteImport } from './routes/a-propos'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ResourcesRouteImport } from './routes/resources'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesAgentDeFretRouteImport } from './routes/services.agent-de-fret'
 import { Route as ServicesAgentMaritimeRouteImport } from './routes/services.agent-maritime'
@@ -34,6 +35,11 @@ const AProposRoute = AProposRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
   '/contact': typeof ContactRoute
+  '/resources': typeof ResourcesRoute
   '/services/agent-de-fret': typeof ServicesAgentDeFretRoute
   '/services/agent-maritime': typeof ServicesAgentMaritimeRoute
   '/services/dedouanement': typeof ServicesDedouanementRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
   '/contact': typeof ContactRoute
+  '/resources': typeof ResourcesRoute
   '/services/agent-de-fret': typeof ServicesAgentDeFretRoute
   '/services/agent-maritime': typeof ServicesAgentMaritimeRoute
   '/services/dedouanement': typeof ServicesDedouanementRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
   '/contact': typeof ContactRoute
+  '/resources': typeof ResourcesRoute
   '/services/agent-de-fret': typeof ServicesAgentDeFretRoute
   '/services/agent-maritime': typeof ServicesAgentMaritimeRoute
   '/services/dedouanement': typeof ServicesDedouanementRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/'
     | '/a-propos'
     | '/contact'
+    | '/resources'
     | '/services/agent-de-fret'
     | '/services/agent-maritime'
     | '/services/dedouanement'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/'
     | '/a-propos'
     | '/contact'
+    | '/resources'
     | '/services/agent-de-fret'
     | '/services/agent-maritime'
     | '/services/dedouanement'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/'
     | '/a-propos'
     | '/contact'
+    | '/resources'
     | '/services/agent-de-fret'
     | '/services/agent-maritime'
     | '/services/dedouanement'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AProposRoute: typeof AProposRoute
   ContactRoute: typeof ContactRoute
+  ResourcesRoute: typeof ResourcesRoute
   ServicesAgentDeFretRoute: typeof ServicesAgentDeFretRoute
   ServicesAgentMaritimeRoute: typeof ServicesAgentMaritimeRoute
   ServicesDedouanementRoute: typeof ServicesDedouanementRoute
@@ -196,6 +209,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/': {
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AProposRoute: AProposRoute,
   ContactRoute: ContactRoute,
+  ResourcesRoute: ResourcesRoute,
   ServicesAgentDeFretRoute: ServicesAgentDeFretRoute,
   ServicesAgentMaritimeRoute: ServicesAgentMaritimeRoute,
   ServicesDedouanementRoute: ServicesDedouanementRoute,

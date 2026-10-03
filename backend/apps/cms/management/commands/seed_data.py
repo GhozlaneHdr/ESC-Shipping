@@ -32,6 +32,7 @@ from apps.cms.models import (
     SiteBranding,
     Stat,
     TrustedPartner,
+    ResourceItem,
 )
 from apps.users.models import User, UserProfile, UserRole
 
@@ -398,6 +399,68 @@ FRONTEND_IMAGES = {
 
 BRANDING_IMAGE = "logo.png"
 
+RESOURCES = [
+    # Common maritime equipment, based on the Operplus container reference.
+    {"resource_type": "container", "slug": "20-dry-van", "title": "20' DRY VAN", "summary": "General-purpose container for palletized and boxed cargo.", "image": "resource-container-high-cube.png", "specifications": {"Exterior": "6.058 × 2.438 × 2.591 m", "Interior": "5.898 × 2.352 × 2.393 m", "Max load": "28,260 kg", "MGW": "30,480 kg", "Tare": "2,220 kg", "Volume": "33.20 m³"}},
+    {"resource_type": "container", "slug": "20-flat-rack", "title": "20' FLAT RACK", "summary": "Open-sided platform for oversized or project cargo.", "image": "resource-container-high-cube.png", "specifications": {"Exterior": "6.058 × 2.438 × 2.591 m", "Interior": "5.950 × 2.226 m", "Max load": "27,110 kg", "MGW": "30,000 kg", "Tare": "2,890 kg", "Volume": "32.30 m³"}},
+    {"resource_type": "container", "slug": "20-flat-rack-hc", "title": "20' FLAT RACK HC", "summary": "High-cube flat rack for tall and heavy project cargo.", "image": "resource-container-high-cube.png", "specifications": {"Exterior": "6.058 × 2.438 × 2.896 m", "Interior": "5.950 × 2.226 m", "Max load": "27,110 kg", "MGW": "30,000 kg", "Tare": "2,890 kg", "Volume": "32.30 m³"}},
+    {"resource_type": "container", "slug": "20-jaula", "title": "20' JAULA", "summary": "Ventilated cage-style unit for cargo requiring airflow.", "image": "resource-container-high-cube.png", "specifications": {"Exterior": "6.058 × 2.438 × 2.591 m", "Interior": "5.943 × 2.318 × 2.275 m", "Max load": "21,610 kg", "MGW": "24,000 kg", "Tare": "2,390 kg", "Volume": "31.40 m³"}},
+    {"resource_type": "container", "slug": "20-jaula-hc", "title": "20' JAULA HC", "summary": "High-cube cage-style unit for ventilated, tall cargo.", "image": "resource-container-high-cube.png", "specifications": {"Exterior": "6.058 × 2.438 × 2.896 m", "Interior": "5.943 × 2.318 × 2.694 m", "Max load": "27,110 kg", "MGW": "30,000 kg", "Tare": "2,750 kg", "Volume": "37.10 m³"}},
+    {"resource_type": "container", "slug": "20-open-top", "title": "20' OPEN TOP", "summary": "Removable-roof container for top-loaded and tall cargo.", "image": "resource-container-bulk.png", "specifications": {"Exterior": "6.058 × 2.438 × 2.591 m", "Interior": "5.940 × 2.352 × 2.360 m", "Max load": "24,000 kg", "MGW": "27,120 kg", "Tare": "3,120 kg", "Volume": "33.20 m³"}},
+    {"resource_type": "container", "slug": "20-pallet-wide", "title": "20' PALLET WIDE", "summary": "Pallet-wide footprint for 14 Euro pallets.", "image": "resource-container-high-cube.png", "specifications": {"Interior": "5.898 × 2.426 × 2.393 m", "Max load": "27,990 kg", "MGW": "30,480 kg", "Tare": "2,490 kg", "Volume": "38.60 m³", "Capacity": "14 Euro pallets"}},
+    {"resource_type": "container", "slug": "20-pallet-wide-hc", "title": "20' PALLET WIDE HC", "summary": "High-cube pallet-wide unit for 14 Euro pallets.", "image": "resource-container-high-cube.png", "specifications": {"Interior": "5.898 × 2.426 × 2.712 m", "Max load": "27,990 kg", "MGW": "30,480 kg", "Tare": "2,490 kg", "Volume": "36.60 m³", "Capacity": "14 Euro pallets"}},
+    {"resource_type": "container", "slug": "20-reefer", "title": "20' REEFER", "summary": "Temperature-controlled container for chilled or frozen cargo.", "image": "resource-container-bulk.png", "specifications": {"Exterior": "6.058 × 2.484 × 2.591 m", "Interior": "5.456 × 2.294 × 2.275 m", "Max load": "27,540 kg", "MGW": "30,480 kg", "Tare": "2,940 kg", "Volume": "28.50 m³"}},
+    {"resource_type": "container", "slug": "20-bulk", "title": "20' BULK", "summary": "Bulk container for dry loose commodities and dense cargo.", "image": "resource-container-bulk.png", "specifications": {"Exterior": "6.058 × 2.484 × 2.591 m", "Interior": "5.456 × 2.294 × 2.275 m", "Max load": "27,540 kg", "MGW": "30,480 kg", "Tare": "2,940 kg", "Volume": "28.50 m³"}},
+    {"resource_type": "container", "slug": "20-tank", "title": "20' TANK", "summary": "Tank container for regulated liquid and bulk commodities.", "image": "resource-container-bulk.png", "specifications": {"Exterior": "7.820 × 2.550 × 2.670 m", "Max load": "27,540 kg", "Pressure": "4.0 bar", "Tare": "3,540–3,830 kg", "Volume": "21,000–26,000 l"}},
+    {"resource_type": "container", "slug": "40-dry-van", "title": "40' DRY VAN", "summary": "Long general-purpose container for high-volume cargo.", "image": "resource-container-high-cube.png", "specifications": {"Exterior": "12.192 × 2.438 × 2.591 m", "Interior": "12.032 × 2.352 × 2.393 m", "Max load": "28,650 kg", "MGW": "30,480 kg", "Tare": "3,850 kg", "Volume": "67.70 m³"}},
+    {"resource_type": "container", "slug": "40-flat-rack", "title": "40' FLAT RACK", "summary": "Heavy-duty platform for oversized machinery and project cargo.", "image": "resource-container-high-cube.png", "specifications": {"Interior": "12.064 × 2.438 × 1.953 m", "Max load": "29,870 kg", "MGW": "35,000 kg", "Tare": "5,130 kg", "Volume": "57.41 m³"}},
+    {"resource_type": "container", "slug": "40-flat-rack-hc", "title": "40' FLAT RACK HC", "summary": "High-cube flat rack for tall, heavy project cargo.", "image": "resource-container-high-cube.png", "specifications": {"Interior": "12.064 × 2.438 × 1.953 m", "Max load": "29,870 kg", "MGW": "35,000 kg", "Tare": "5,130 kg", "Volume": "57.41 m³"}},
+    {"resource_type": "container", "slug": "40-high-cube", "title": "40' HIGH CUBE", "summary": "Extra height for voluminous cargo and optimized pallet loading.", "image": "resource-container-high-cube.png", "specifications": {"Exterior": "12.192 × 2.438 × 2.896 m", "Interior": "12.064 × 2.438 × 2.692 m", "Max load": "29,870 kg", "MGW": "30,480 kg", "Tare": "5,130 kg", "Volume": "57.41 m³"}},
+    {"resource_type": "container", "slug": "40-jaula", "title": "40' JAULA", "summary": "Ventilated cage-style equipment for airflow-sensitive cargo.", "image": "resource-container-high-cube.png", "specifications": {"Interior": "12.086 × 2.320 × 1.120–2.275 m", "Max load": "26,760 kg", "MGW": "30,480 kg", "Tare": "3,720 kg", "Volume": "31.40 m³"}},
+    {"resource_type": "container", "slug": "40-open-top", "title": "40' OPEN TOP", "summary": "Top-loading format for tall, dense or crane-handled cargo.", "image": "resource-container-bulk.png", "specifications": {"Interior": "12.032 × 2.352 × 2.360 m", "Max load": "26,530 kg", "MGW": "30,480 kg", "Tare": "3,950 kg", "Volume": "66.80 m³"}},
+    {"resource_type": "container", "slug": "40-reefer-hc", "title": "40' REEFER HC", "summary": "High-cube refrigerated unit for temperature-sensitive cargo.", "image": "resource-container-high-cube.png", "specifications": {"Interior": "11.590 × 2.294 × 2.557 m", "Max load": "30,420 kg", "MGW": "35,000 kg", "Tare": "4,580 kg", "Volume": "67.90 m³"}},
+    {"resource_type": "container", "slug": "40-pallet-wide", "title": "40' PALLET WIDE", "summary": "Pallet-wide format for 30 Euro pallets.", "image": "resource-container-high-cube.png", "specifications": {"Interior": "12.100 × 2.426 × 2.383 m", "Max load": "29,850 kg", "MGW": "34,000 kg", "Tare": "4,150 kg", "Volume": "79.10 m³", "Capacity": "30 Euro pallets"}},
+    {"resource_type": "container", "slug": "40-pallet-wide-hc", "title": "40' PALLET WIDE HC", "summary": "High-cube pallet-wide format for 30 Euro pallets.", "image": "resource-container-high-cube.png", "specifications": {"Interior": "12.100 × 2.426 × 2.694 m", "Max load": "29,850 kg", "MGW": "34,000 kg", "Tare": "4,150 kg", "Volume": "79.10 m³", "Capacity": "30 Euro pallets"}},
+    {"resource_type": "container", "slug": "45-pallet-wide-hc", "title": "45' PALLET WIDE HC", "summary": "Maximum pallet capacity for 33 Euro pallets.", "image": "resource-container-high-cube.png", "specifications": {"Interior": "13.532 × 2.426 × 2.694 m", "Max load": "29,350 kg", "MGW": "34,000 kg", "Tare": "4,650 kg", "Volume": "88.40 m³", "Capacity": "33 Euro pallets"}},
+    {"resource_type": "container", "slug": "45-reefer-pallet-wide-hc", "title": "45' REEFER PALLET WIDE HC", "summary": "Refrigerated pallet-wide format for 33 Euro pallets.", "image": "resource-container-high-cube.png", "specifications": {"Interior": "13.532 × 2.426 × 2.694 m", "Max load": "29,350 kg", "MGW": "34,000 kg", "Tare": "4,650 kg", "Volume": "88.40 m³", "Capacity": "33 Euro pallets"}},
+    # Airframes and ULDs from the Operplus aircraft and cargo reference.
+    {"resource_type": "aircraft", "slug": "airbus-a320", "title": "AIRBUS A320", "summary": "Narrow-body passenger aircraft with lower-deck cargo capability.", "image": "resource-aircraft-747.png", "specifications": {"Hold 1": "124 × 180 cm", "Hold 3": "124 × 180 cm", "Hold 5": "87 × 94 cm", "Capacity": "0.5 Ton", "ULD compatible": "AKH"}},
+    {"resource_type": "aircraft", "slug": "airbus-a321", "title": "AIRBUS A321", "summary": "Narrow-body aircraft for regional cargo uplift.", "image": "resource-aircraft-747.png", "specifications": {"Hold 1": "124 × 180 cm", "Hold 3": "124 × 180 cm", "Hold 5": "87 × 94 cm", "Capacity": "1 Ton", "ULD compatible": "AKH"}},
+    {"resource_type": "aircraft", "slug": "airbus-a330-200", "title": "AIRBUS A330-200", "summary": "Wide-body aircraft for intercontinental cargo flows.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "270 × 171 cm", "Stern door": "272 × 167 cm", "Loading door": "95 × 107 cm", "Capacity": "14 Ton", "ULD compatible": "LD3, LD9, PAP, PMC"}},
+    {"resource_type": "aircraft", "slug": "airbus-a330-300", "title": "AIRBUS A330-300", "summary": "Wide-body aircraft with flexible lower-deck ULD positions.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "270 × 167 cm", "Stern door": "272 × 167 cm", "Loading door": "94 × 315 cm", "Capacity": "16 Ton", "ULD compatible": "LD3, LD9, PAP, PMC, LD11, PKC"}},
+    {"resource_type": "aircraft", "slug": "airbus-a350-900", "title": "AIRBUS A350-900", "summary": "Long-range wide-body aircraft for high-value cargo.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "285 × 168 cm", "Stern door": "280 × 168 cm", "Capacity": "17 Ton", "ULD compatible": "LD3, PMC, PAP"}},
+    {"resource_type": "aircraft", "slug": "airbus-a350-1000", "title": "AIRBUS A350-1000", "summary": "High-capacity long-range wide-body aircraft.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "176 × 291 cm", "Stern door": "175 × 285 cm", "Loading door": "76 × 95 cm", "Capacity": "25 Ton", "ULD compatible": "LD3, PMC, PAP"}},
+    {"resource_type": "aircraft", "slug": "airbus-a380-800", "title": "AIRBUS A380-800", "summary": "Large wide-body platform with broad ULD compatibility.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "283 × 173 cm", "Stern door": "254 × 173 cm", "Capacity": "13.2 Ton", "ULD compatible": "LD3, LD9, PMC, PAP, LD11"}},
+    {"resource_type": "aircraft", "slug": "boeing-787-8", "title": "BOEING 787-8", "summary": "Efficient wide-body aircraft for international cargo.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "268 × 170 cm", "Stern door": "268 × 170 cm", "Loading door": "101 × 114 cm", "Capacity": "9 Ton", "ULD compatible": "LD3, LD9, LD11, PMC, PAP"}},
+    {"resource_type": "aircraft", "slug": "boeing-787-9", "title": "BOEING 787-9", "summary": "Extended Dreamliner platform with additional cargo capacity.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "268 × 170 cm", "Stern door": "268 × 170 cm", "Loading door": "101 × 114 cm", "Capacity": "11 Ton", "ULD compatible": "LD3, LD9, LD11, PMC, PAP"}},
+    {"resource_type": "aircraft", "slug": "boeing-787-10", "title": "BOEING 787-10", "summary": "Longer Dreamliner variant for efficient cargo uplift.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "269 × 170 cm", "Stern door": "269 × 170 cm", "Loading door": "102 × 156 cm", "Capacity": "13 Ton", "ULD compatible": "LD3, LD9, LD11, PMC, PAP"}},
+    {"resource_type": "aircraft", "slug": "boeing-777-200", "title": "BOEING 777-200", "summary": "Long-range twin-engine wide-body aircraft.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "269 × 170 cm", "Stern door": "269 × 170 cm", "Loading door": "91 × 103 cm", "Capacity": "20 Ton", "ULD compatible": "LD3, LD9, LD11, PMC, PAP"}},
+    {"resource_type": "aircraft", "slug": "boeing-777-300", "title": "BOEING 777-300", "summary": "High-capacity long-range passenger aircraft.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "269 × 170 cm", "Stern door": "269 × 170 cm", "Loading door": "91 × 103 cm", "Capacity": "25 Ton", "ULD compatible": "LD3, LD9, LD11, PMC, PAP"}},
+    {"resource_type": "aircraft", "slug": "boeing-747-8f", "title": "BOEING 747-8F", "summary": "Dedicated freighter for oversized and intercontinental cargo.", "image": "resource-aircraft-747.png", "specifications": {"Bow door": "264 × 249 cm", "Stern door": "264 × 168 cm", "Loading door": "112 × 168 cm", "Capacity": "117 Ton", "ULD compatible": "LD3, LD9, LD11, PMC, PAP"}},
+    {"resource_type": "air_freight", "slug": "akh", "title": "AKH", "summary": "Lower-deck container for narrow-body aircraft.", "image": "resource-air-pmc.png", "specifications": {"Dimensions": "62.9 × 244 × 117.8 × 156.2 × 154.4 cm", "Volume": "3.4 m³"}},
+    {"resource_type": "air_freight", "slug": "ld3", "title": "LD3", "summary": "Contoured lower-deck ULD for wide-body aircraft.", "image": "resource-air-pmc.png", "specifications": {"Dimensions": "201.6 × 110.2 × 163.5 × 156.2 × 154.4 cm", "Volume": "4.2 m³"}},
+    {"resource_type": "air_freight", "slug": "ld9", "title": "LD9", "summary": "Large lower-deck container for high-volume cargo.", "image": "resource-air-pmc.png", "specifications": {"Dimensions": "224.5 × 157.5 × 317.5 cm", "Volume": "10 m³"}},
+    {"resource_type": "air_freight", "slug": "pap", "title": "PAP", "summary": "Main-deck pallet for wide-body aircraft loading systems.", "image": "resource-air-pmc.png", "specifications": {"Dimensions": "224.5 × 163.5 × 317.5 cm", "Volume": "11.9 m³"}},
+    {"resource_type": "air_freight", "slug": "pmc", "title": "PMC", "summary": "Aluminium air cargo pallet with cargo net restraint.", "image": "resource-air-pmc.png", "specifications": {"Dimensions": "244 × 163.5 × 317.5 cm", "Volume": "12.7 m³"}},
+    {"resource_type": "air_freight", "slug": "ld11", "title": "LD11", "summary": "Wide-body lower-deck ULD for dense or irregular loads.", "image": "resource-air-pmc.png", "specifications": {"Dimensions": "154.4 × 163.5 × 317.5 cm", "Volume": "7 m³"}},
+    {"resource_type": "air_freight", "slug": "pkc", "title": "PKC", "summary": "Compact lower-deck air freight unit for fast handling.", "image": "resource-air-pmc.png", "specifications": {"Dimensions": "153.4 × 156.2 × 109 cm", "Volume": "2.02 m³"}},
+    {"resource_type": "incoterm", "slug": "incoterms-2020", "title": "INCOTERMS® 2020", "summary": "A practical guide to handover points, costs and risk allocation.", "image": "hero-port.jpg", "specifications": {"terms": ["EXW", "FCA", "FAS", "FOB", "CFR", "CIF", "CPT", "CIP", "DAP", "DPU", "DDP"]}, "responsibilities": {"stages": ["Ready", "Origin handling", "Export customs", "Main carriage", "Import customs", "Final delivery"], "seller": {"EXW": 1, "FCA": 2, "FAS": 2, "FOB": 3, "CFR": 4, "CIF": 4, "CPT": 4, "CIP": 4, "DAP": 5, "DPU": 5, "DDP": 6}, "notes": {"EXW": "Buyer takes responsibility from the seller’s premises.", "FCA": "Seller clears goods for export and hands them to the carrier.", "FAS": "Seller places goods alongside the vessel at origin.", "FOB": "Seller loads goods on board the vessel.", "CFR": "Seller pays freight to destination; risk transfers at loading.", "CIF": "CFR plus seller-provided minimum cargo insurance.", "CPT": "Seller pays carriage to the named place; risk transfers earlier.", "CIP": "CPT plus seller-provided cargo insurance.", "DAP": "Seller delivers ready for unloading at the named destination.", "DPU": "Seller delivers after unloading at the named destination.", "DDP": "Seller manages costs and formalities through delivery, including import duties."}}},
+]
+
+LOAD_CHARTS = [
+    {"resource_type": "load_chart", "slug": "dry-20-100x120", "title": "Dry 20' - 100 × 120 cm pallets", "summary": "20-foot dry container capacity plan with 100 × 120 cm pallets.", "image": "load-charts/load-chart-02.png", "specifications": {"Load plan": "100 × 120 cm pallets", "Loose cargo": "Equivalent to 1 or 1.5 pallets", "Max load": "28,260 kg", "MGW": "30,480 kg", "Tare": "2,220 kg", "Volume": "33.20 m³"}},
+    {"resource_type": "load_chart", "slug": "dry-20-euro-pallets", "title": "Dry 20' - 10 Euro pallets", "summary": "20-foot dry container plan for 80 × 120 cm Euro pallets.", "image": "load-charts/load-chart-03.png", "specifications": {"Load plan": "10 Euro pallets, 80 × 120 cm", "Loose cargo": "Equivalent to 1 pallet", "Max load": "28,260 kg", "MGW": "30,480 kg", "Tare": "2,220 kg", "Volume": "33.20 m³"}},
+    {"resource_type": "load_chart", "slug": "dry-20-100x120-pallets", "title": "Dry 20' - 10 pallets", "summary": "20-foot dry container plan for 10 pallets of 100 × 120 cm.", "image": "load-charts/load-chart-04.png", "specifications": {"Load plan": "10 pallets, 100 × 120 cm", "Loose cargo": "Equivalent to 1 pallet", "Max load": "28,260 kg", "MGW": "30,480 kg", "Tare": "2,220 kg", "Volume": "33.20 m³"}},
+    {"resource_type": "load_chart", "slug": "dry-20-11-euro-pallets", "title": "Dry 20' - 11 Euro pallets", "summary": "20-foot dry container plan for 11 Euro pallets of 80 × 120 cm.", "image": "load-charts/load-chart-05.png", "specifications": {"Load plan": "11 Euro pallets, 80 × 120 cm", "Loose cargo": "Equivalent to 1 or 1.5 pallets", "Max load": "28,260 kg", "MGW": "30,480 kg", "Tare": "2,220 kg", "Volume": "33.20 m³"}},
+    {"resource_type": "load_chart", "slug": "dry-40-21-pallets", "title": "Dry 40' - 21 pallets", "summary": "40-foot dry container plan for 21 pallets of 100 × 120 cm.", "image": "load-charts/load-chart-06.png", "specifications": {"Load plan": "21 pallets, 100 × 120 cm", "Loose cargo": "Equivalent to 1 pallet", "Max load": "28,650 kg", "MGW": "32,500 kg", "Tare": "3,850 kg", "Volume": "67.70 m³"}},
+    {"resource_type": "load_chart", "slug": "dry-40-24-euro-pallets", "title": "Dry 40' - 24 Euro pallets", "summary": "40-foot dry container plan for 24 Euro pallets of 80 × 120 cm.", "image": "load-charts/load-chart-07.png", "specifications": {"Load plan": "24 Euro pallets, 80 × 120 cm", "Loose cargo": "Equivalent to 1 pallet", "Max load": "28,650 kg", "MGW": "32,500 kg", "Tare": "3,850 kg", "Volume": "67.70 m³"}},
+    {"resource_type": "load_chart", "slug": "reefer-20-10-euro-pallets", "title": "Reefer 20' - 10 Euro pallets", "summary": "20-foot refrigerated container plan for 10 Euro pallets.", "image": "load-charts/load-chart-08.png", "specifications": {"Load plan": "10 Euro pallets, 80 × 120 cm", "Loose cargo": "Equivalent to 1 pallet", "Max load": "27,540 kg", "MGW": "30,480 kg", "Tare": "2,940 kg", "Volume": "28.50 m³"}},
+    {"resource_type": "load_chart", "slug": "reefer-20-hc-9-pallets", "title": "Reefer 20' HC - 9 pallets", "summary": "20-foot high-cube reefer plan for 9 pallets of 100 × 120 cm.", "image": "load-charts/load-chart-09.png", "specifications": {"Load plan": "9 pallets, 100 × 120 cm", "Loose cargo": "Equivalent to 1 or 1.5 pallets", "Max load": "27,540 kg", "MGW": "30,480 kg", "Tare": "2,940 kg", "Volume": "28.50 m³"}},
+    {"resource_type": "load_chart", "slug": "reefer-40-hc-20-pallets", "title": "Reefer 40' HC - 20 pallets", "summary": "40-foot high-cube reefer plan for 20 pallets of 100 × 120 cm.", "image": "load-charts/load-chart-10.png", "specifications": {"Load plan": "20 pallets, 100 × 120 cm", "Loose cargo": "Equivalent to 1 or 1.5 pallets", "Max load": "30,420 kg", "MGW": "35,000 kg", "Tare": "4,580 kg", "Volume": "67.90 m³"}},
+    {"resource_type": "load_chart", "slug": "reefer-40-hc-mixed-pallets", "title": "Reefer 40' HC - mixed pallet plan", "summary": "40-foot high-cube reefer plan for 20 standard pallets plus one Euro pallet.", "image": "load-charts/load-chart-11.png", "specifications": {"Load plan": "20 pallets of 100 × 120 cm + 1 Euro pallet", "Loose cargo": "229.4 cm × 19 cm", "Max load": "30,420 kg", "MGW": "35,000 kg", "Tare": "4,580 kg", "Volume": "67.90 m³"}},
+    {"resource_type": "load_chart", "slug": "reefer-40-hc-23-euro-pallets", "title": "Reefer 40' HC - 23 Euro pallets", "summary": "40-foot high-cube reefer plan for 23 Euro pallets of 80 × 120 cm.", "image": "load-charts/load-chart-12.png", "specifications": {"Load plan": "23 Euro pallets, 80 × 120 cm", "Loose cargo": "Equivalent to 1 or 1.5 pallets", "Max load": "30,420 kg", "MGW": "35,000 kg", "Tare": "4,580 kg", "Volume": "67.90 m³"}},
+]
+
 
 class Command(BaseCommand):
     help = "Seed the database with front-end mock data and create default users."
@@ -424,6 +487,7 @@ class Command(BaseCommand):
             self._seed_associated_campaigns()
             self._seed_stats()
             self._seed_partners()
+            self._seed_resources()
 
         self.stdout.write(self.style.SUCCESS("\n=== Seeding Complete ==="))
         self._print_summary()
@@ -437,6 +501,7 @@ class Command(BaseCommand):
         AssociatedCampaign.objects.all().delete()
         Stat.objects.all().delete()
         TrustedPartner.objects.all().delete()
+        ResourceItem.objects.all().delete()
         UserProfile.objects.all().delete()
         User.objects.all().delete()
         self.stdout.write("  All existing data cleared.")
@@ -597,6 +662,57 @@ class Command(BaseCommand):
             else:
                 self.stdout.write(f"  Exists:  {partner.name}")
 
+    def _seed_resources(self):
+        self.stdout.write(self.style.MIGRATE_HEADING("\nCreating Resources..."))
+        frontend_assets = Path(settings.BASE_DIR).parent / "src" / "assets"
+        for order, item_data in enumerate(RESOURCES + LOAD_CHARTS, start=1):
+            item_data = item_data.copy()
+            image_filename = item_data.pop("image")
+            if item_data["resource_type"] == "container":
+                container_image_names = {
+                    "20-bulk": "20-granelero",
+                    "20-open-top": "20-ot",
+                    "20-tank": "20-cisterna",
+                    "20-pallet-wide": "20-pw",
+                    "20-pallet-wide-hc": "20-pw-hc",
+                    "40-high-cube": "40-hc",
+                    "40-open-top": "40-ot",
+                    "40-pallet-wide": "40-pw",
+                    "40-pallet-wide-hc": "40-pw-hc",
+                    "45-pallet-wide-hc": "45-pw-hc",
+                    "45-reefer-pallet-wide-hc": "45-reefer-pw-hc",
+                }
+                source_stem = container_image_names.get(item_data["slug"], item_data["slug"])
+                image_filename = f"operplus-containers/{source_stem}.png"
+            elif item_data["resource_type"] == "air_freight":
+                image_filename = f"operplus-air/uld/{item_data['slug']}.png"
+            elif item_data["resource_type"] == "aircraft":
+                aircraft_image_names = {
+                    "airbus-a320": "AIRBUSA320",
+                    "airbus-a321": "AIRBUSA321",
+                    "airbus-a330-200": "AIRBUSA330-200",
+                    "airbus-a330-300": "AIRBUSA330-300",
+                    "airbus-a350-900": "AIRBUSA350-900",
+                    "airbus-a350-1000": "AIRBUSA350-1000",
+                    "airbus-a380-800": "AIRBUSA380-800",
+                    "boeing-787-8": "BOEING787-8",
+                    "boeing-787-9": "BOEING787-9",
+                    "boeing-787-10": "BOEING787-10",
+                    "boeing-777-200": "BOEING777-200",
+                    "boeing-777-300": "BOEING777-300",
+                    "boeing-747-8f": "BOEING747-8F",
+                }
+                image_filename = f"operplus-air/aircraft/{aircraft_image_names[item_data['slug']]}.png"
+            item, created = ResourceItem.objects.update_or_create(
+                slug=item_data["slug"], defaults={**item_data, "order": order}
+            )
+            source = frontend_assets / image_filename
+            existing_image = (item.image.name or "").replace("\\", "/")
+            if source.exists() and (created or not existing_image.endswith(image_filename)):
+                with open(source, "rb") as image_file:
+                    item.image.save(image_filename, File(image_file), save=True)
+            self.stdout.write(self.style.SUCCESS(f"  {'Created' if created else 'Updated'}: {item.title}"))
+
     def _download_partner_logo(self, partner, domain):
         """Fetch the carrier favicon from its official domain into media storage."""
         logo_url = f"https://www.google.com/s2/favicons?domain={domain}&sz=512"
@@ -636,3 +752,4 @@ class Command(BaseCommand):
         self.stdout.write(f"  Associated Campaigns: {AssociatedCampaign.objects.count()}")
         self.stdout.write(f"  Statistics:         {Stat.objects.count()}")
         self.stdout.write(f"  Trusted Partners:   {TrustedPartner.objects.count()}")
+        self.stdout.write(f"  Resource Items:     {ResourceItem.objects.count()}")

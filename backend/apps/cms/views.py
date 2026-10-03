@@ -3,6 +3,7 @@ Views for CMS models (Services, Campaigns, Stats, Partners).
 """
 
 from rest_framework import viewsets
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny
 
 from .models import (
@@ -12,6 +13,7 @@ from .models import (
     SiteBranding,
     Stat,
     TrustedPartner,
+    ResourceItem,
 )
 from .serializers import (
     AssociatedCampaignSerializer,
@@ -20,6 +22,7 @@ from .serializers import (
     SiteBrandingSerializer,
     StatSerializer,
     TrustedPartnerSerializer,
+    ResourceItemSerializer,
 )
 
 
@@ -68,3 +71,18 @@ class TrustedPartnerViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = TrustedPartner.objects.filter(is_active=True)
     serializer_class = TrustedPartnerSerializer
     permission_classes = [AllowAny]
+
+
+class ResourceItemViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ResourceItem.objects.filter(is_published=True)
+    serializer_class = ResourceItemSerializer
+    permission_classes = [AllowAny]
+    lookup_field = "slug"
+
+    class ResourcePagination(PageNumberPagination):
+        # The Resources page is a reference catalogue; return all published
+        # equipment records together so category tabs can filter client-side.
+        page_size = 100
+        max_page_size = 100
+
+    pagination_class = ResourcePagination

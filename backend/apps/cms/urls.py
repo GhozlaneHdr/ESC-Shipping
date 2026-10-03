@@ -12,6 +12,7 @@ from .views import (
     SiteBrandingViewSet,
     StatViewSet,
     TrustedPartnerViewSet,
+    ResourceItemViewSet,
 )
 
 router = DefaultRouter()
@@ -21,6 +22,7 @@ router.register(r"maritime-campaigns", MaritimeCampaignViewSet, basename="mariti
 router.register(r"associated-campaigns", AssociatedCampaignViewSet, basename="associated-campaign")
 router.register(r"stats", StatViewSet, basename="stat")
 router.register(r"partners", TrustedPartnerViewSet, basename="partner")
+router.register(r"resources", ResourceItemViewSet, basename="resource")
 
 urlpatterns = [
     path("", include(router.urls)),

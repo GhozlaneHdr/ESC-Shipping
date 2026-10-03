@@ -12,6 +12,7 @@ from .models import (
     SiteBranding,
     Stat,
     TrustedPartner,
+    ResourceItem,
 )
 
 
@@ -120,3 +121,9 @@ class TrustedPartnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = TrustedPartner
         fields = ["id", "name", "logo", "website", "is_active", "order"]
+
+
+class ResourceItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResourceItem
+        fields = ["id", "resource_type", "slug", "title", "summary", "image", "specifications", "responsibilities", "is_published", "order"]

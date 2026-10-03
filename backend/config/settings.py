@@ -12,6 +12,18 @@ from decouple import config, Csv
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+def configured_path(name, default):
+    """Resolve an environment path relative to the Django backend directory."""
+    value = Path(config(name, default=str(default)))
+    return value if value.is_absolute() else BASE_DIR / value
+
+
+def configured_url(name, default):
+    """Normalize an asset URL so Django always receives an absolute path."""
+    value = config(name, default=default).strip()
+    return f"/{value.strip('/')}/"
+
 # =============================================================================
 # Core Settings
 # =============================================================================
@@ -19,6 +31,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("DJANGO_SECRET_KEY", default="django-insecure-dev-key")
 DEBUG = config("DJANGO_DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = config("DJANGO_ALLOWED_HOSTS", default="localhost,127.0.0.1", cast=Csv())
+
+# When Django is behind a reverse proxy (Nginx, Apache or a hosting panel),
+# preserve the original HTTPS scheme and host forwarded by that proxy.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = config("DJANGO_USE_X_FORWARDED_HOST", default=False, cast=bool)
+SECURE_SSL_REDIRECT = config("DJANGO_SECURE_SSL_REDIRECT", default=False, cast=bool)
+SESSION_COOKIE_SECURE = config("DJANGO_SESSION_COOKIE_SECURE", default=not DEBUG, cast=bool)
+CSRF_COOKIE_SECURE = config("DJANGO_CSRF_COOKIE_SECURE", default=not DEBUG, cast=bool)
 
 # =============================================================================
 # Application Definition
@@ -164,11 +184,25 @@ USE_TZ = True
 # Static & Media Files
 # =============================================================================
 
-STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
+# Static files are collected once and served by WhiteNoise (or the web server).
+# Keep STATIC_ROOT separate from application source directories.
+STATIC_URL = configured_url("DJANGO_STATIC_URL", "/static/")
+STATIC_ROOT = configured_path("DJANGO_STATIC_ROOT", BASE_DIR / "staticfiles")
 
-MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# Uploaded files (CMS images, partner logos, service images, etc.) are media,
+# not static assets. In production this directory should be on persistent
+# storage and served by the reverse proxy or object storage.
+MEDIA_URL = configured_url("DJANGO_MEDIA_URL", "/media/")
+MEDIA_ROOT = configured_path("DJANGO_MEDIA_ROOT", BASE_DIR / "media")
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # =============================================================================
 # Default Primary Key Field Type
@@ -225,8 +259,14 @@ SIMPLE_JWT = {
 # CORS Configuration
 # =============================================================================
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = config("CORS_ALLOW_ALL_ORIGINS", default=DEBUG, cast=bool)
+CORS_ALLOWED_ORIGINS = config("CORS_ALLOWED_ORIGINS", default="", cast=Csv())
 CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
+
+# Enable this only when the hosting platform does not provide a separate
+# static/media mapping. Nginx/Apache or object storage is preferred in prod.
+SERVE_MEDIA = config("DJANGO_SERVE_MEDIA", default=DEBUG, cast=bool)
 
 # =============================================================================
 # Email Configuration (SMTP)

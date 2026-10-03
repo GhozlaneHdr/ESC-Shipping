@@ -145,3 +145,26 @@ class TrustedPartner(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ResourceItem(models.Model):
+    """Reference material shown in the public Resources library."""
+    RESOURCE_TYPES = [("container", "Container"), ("air_freight", "Air freight"), ("aircraft", "Aircraft"), ("incoterm", "Incoterm"), ("load_chart", "Load chart")]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    resource_type = models.CharField(max_length=20, choices=RESOURCE_TYPES)
+    slug = models.SlugField(unique=True)
+    title = models.CharField(max_length=160)
+    summary = models.TextField(blank=True)
+    image = models.ImageField(upload_to="resources/", blank=True, null=True)
+    specifications = models.JSONField(default=dict, blank=True)
+    responsibilities = models.JSONField(default=dict, blank=True)
+    is_published = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        verbose_name = "Resource item"
+        verbose_name_plural = "Resource items"
+        ordering = ["resource_type", "order", "title"]
+
+    def __str__(self):
+        return f"{self.get_resource_type_display()}: {self.title}"

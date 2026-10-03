@@ -54,6 +54,7 @@ urlpatterns = [
     path("api/v1/shipping/", include("apps.shipping.urls")),
 ]
 
-# Serve media files in development
-if settings.DEBUG:
+# Serve media through Django only for local development or hosts without a
+# separate media mapping. In production, prefer Nginx/Apache/object storage.
+if settings.DEBUG or settings.SERVE_MEDIA:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

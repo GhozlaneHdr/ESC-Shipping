@@ -102,6 +102,18 @@ export interface TrustedPartner {
   order: number;
 }
 
+export interface ResourceItem {
+  id: string;
+  resource_type: "container" | "air_freight" | "aircraft" | "incoterm" | "load_chart";
+  slug: string;
+  title: string;
+  summary: string;
+  image: string | null;
+  specifications: Record<string, string | string[]>;
+  responsibilities: { stages?: string[]; seller?: Record<string, number>; notes?: Record<string, string> };
+  order: number;
+}
+
 // =============================================================================
 // API Functions
 // =============================================================================
@@ -137,5 +149,10 @@ export async function getAssociatedCampaigns(): Promise<AssociatedCampaign[]> {
 
 export async function getTrustedPartners(): Promise<TrustedPartner[]> {
   const data = await fetchFromAPI<{ results: TrustedPartner[] }>("/cms/partners/");
+  return data.results;
+}
+
+export async function getResources(): Promise<ResourceItem[]> {
+  const data = await fetchFromAPI<{ results: ResourceItem[] }>("/cms/resources/");
   return data.results;
 }
